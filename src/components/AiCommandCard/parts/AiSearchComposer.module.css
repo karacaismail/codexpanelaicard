@@ -1,6 +1,12 @@
 /* AiSearchComposer — AI sorgu input'u + orb'un iniş yuvası. */
 
 .composer {
+  /* İçerik kayarken input, header'ın altında ikinci satır olarak sabit
+   * kalır (scroll container = expanded region; -4px üst padding'i telafi
+   * eder). Orb z-index 2'de kaldığı için yuvasının üstünde kalır. */
+  position: sticky;
+  inset-block-start: -4px;
+  z-index: 1;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -9,6 +15,7 @@
   border-radius: 999px;
   padding: 6px 8px 6px 16px;
   background: var(--ai-cc-surface);
+  box-shadow: 0 4px 10px -6px rgba(16, 24, 40, 0.18);
   transition: border-color var(--ai-command-card-hover-duration) ease,
     box-shadow var(--ai-command-card-hover-duration) ease;
 }

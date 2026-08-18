@@ -24,7 +24,7 @@ export function AiMorphingStar({ size = 24 }: { size?: number }) {
     <svg viewBox="0 0 24 24" width={size} height={size}>
       <path
         d={STAR_5}
-        fill="hsla(325, 100%, 72%, 0.5)"
+        fill="hsla(325, 90%, 60%, 0.55)"
         stroke="hsl(52, 100%, 80%)"
         strokeWidth={2.7}
         strokeLinejoin="round"
@@ -47,12 +47,12 @@ export function AiMorphingStar({ size = 24 }: { size?: number }) {
           repeatCount="indefinite"
           values="hsl(52,100%,80%);hsl(112,100%,80%);hsl(172,100%,80%);hsl(232,100%,80%);hsl(292,100%,80%);hsl(352,100%,80%);hsl(52,100%,80%)"
         />
-        {/* İç dolgu: 24sn gökkuşağı — doygunluk %100, açıklık %72, alfa 0.5. */}
+        {/* İç dolgu: 24sn gökkuşağı — pastel-koyu: S90, L60, alfa 0.55. */}
         <animate
           attributeName="fill"
           dur="24s"
           repeatCount="indefinite"
-          values="hsla(325,100%,72%,0.5);hsla(25,100%,72%,0.5);hsla(85,100%,72%,0.5);hsla(145,100%,72%,0.5);hsla(205,100%,72%,0.5);hsla(265,100%,72%,0.5);hsla(325,100%,72%,0.5)"
+          values="hsla(325,90%,60%,0.55);hsla(25,90%,60%,0.55);hsla(85,90%,60%,0.55);hsla(145,90%,60%,0.55);hsla(205,90%,60%,0.55);hsla(265,90%,60%,0.55);hsla(325,90%,60%,0.55)"
         />
       </path>
     </svg>

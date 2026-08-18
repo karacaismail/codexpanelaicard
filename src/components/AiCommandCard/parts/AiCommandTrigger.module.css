@@ -38,8 +38,9 @@
   border-radius: 100%;
   color: #fff;
   /* "Yıldızın dışı": kendi taban rengi; hue döngüsüyle sürekli değişir.
+   * Fosforlu değil: doygunluk yüksek (S88) ama bir tık koyu (L56).
    * Gölgelendirme kontrastı bilinçli olarak düşük tutuldu. */
-  background: hsl(244, 62%, 68%);
+  background: hsl(244, 88%, 56%);
   border: 1px solid rgba(35, 26, 112, 0.35);
   box-shadow:
     /* üstten içe çöküş: merkez çukur (yumuşatılmış) */
@@ -60,13 +61,13 @@
 }
 
 @keyframes orbBodyRainbow {
-  0%   { background-color: hsl(244, 95%, 66%); }
-  16.7% { background-color: hsl(304, 95%, 66%); }
-  33.3% { background-color: hsl(4, 95%, 66%); }
-  50%  { background-color: hsl(64, 95%, 66%); }
-  66.7% { background-color: hsl(124, 95%, 66%); }
-  83.3% { background-color: hsl(184, 95%, 66%); }
-  100% { background-color: hsl(244, 95%, 66%); }
+  0%   { background-color: hsl(244, 88%, 56%); }
+  16.7% { background-color: hsl(304, 88%, 56%); }
+  33.3% { background-color: hsl(4, 88%, 56%); }
+  50%  { background-color: hsl(64, 88%, 56%); }
+  66.7% { background-color: hsl(124, 88%, 56%); }
+  83.3% { background-color: hsl(184, 88%, 56%); }
+  100% { background-color: hsl(244, 88%, 56%); }
 }
 
 /*
