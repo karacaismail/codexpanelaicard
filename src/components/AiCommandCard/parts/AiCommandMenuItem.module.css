@@ -9,16 +9,16 @@
   position: relative;
   display: grid;
   grid-template-columns: auto 1fr;
-  column-gap: 8px;
-  row-gap: 4px;
+  column-gap: 10px;
+  row-gap: 6px;
   align-items: center;
   align-content: start;
   inline-size: 100%;
-  min-block-size: 64px;
+  min-block-size: 76px;
   border: 1px solid var(--ai-cc-border);
   border-radius: 8px;
   background: var(--ai-cc-surface);
-  padding: 10px;
+  padding: 12px 14px;
   text-align: start;
   cursor: pointer;
   color: inherit;
@@ -68,10 +68,27 @@
   color: var(--ai-cc-accent);
 }
 
+/* İkon, veri ne verirse versin kutuyla orantılı ölçeğe çekilir. */
+.menuItemIcon svg {
+  inline-size: 20px;
+  block-size: 20px;
+}
+
 .menuItemLabel {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+}
+
+/* Geniş container'da kutular büyür; yazı ve ikon orantılı ölçeklenir. */
+@container ai-command-region (min-width: 640px) {
+  .menuItemIcon svg {
+    inline-size: 22px;
+    block-size: 22px;
+  }
+  .menuItemLabel {
+    font-size: 15px;
+  }
 }
 
 /* İkonsuz kartta başlık ilk satırın tamamını alır. */
@@ -86,9 +103,16 @@
 
 .menuItemDescription {
   grid-column: 1 / -1;
-  font-size: 12px;
+  font-size: 12.5px;
+  line-height: 1.45;
   color: var(--ai-cc-text-muted);
-  overflow-wrap: anywhere;
+  overflow-wrap: break-word;
+}
+
+@container ai-command-region (min-width: 640px) {
+  .menuItemDescription {
+    font-size: 13px;
+  }
 }
 
 /* Sağ üst köşede yüzer; kartın grid ölçülerine katılmaz. */
