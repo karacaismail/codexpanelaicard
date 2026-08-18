@@ -5,8 +5,9 @@
   align-items: center;
   gap: 8px;
   border: 1px solid var(--ai-cc-border);
-  border-radius: 8px;
-  padding: 6px 8px;
+  /* Radius istisnası: search-bar kapsülü — uçlar %100 yuvarlak. */
+  border-radius: 999px;
+  padding: 6px 8px 6px 16px;
   background: var(--ai-cc-surface);
   transition: border-color var(--ai-command-card-hover-duration) ease,
     box-shadow var(--ai-command-card-hover-duration) ease;

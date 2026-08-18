@@ -74,13 +74,13 @@ içerik gövdesi dikey scroll alır (body scroll lock yok).
 
 ## Radius sistemi
 
-- Tüm dikdörtgen yüzeylerde `border-radius` en fazla **8px** (0.5rem): shell,
-  menü kartları, composer, yanıt alanı, logo, rapor kartları, modallar.
-- **İstisna — tam yuvarlak öğeler `100%`:** AI orb + glow, yuvarlak aksiyon
-  butonları (`actionBase`), partiküller, durum/thinking noktaları, responseIcon.
-- Kapsül biçimliler (öneri pill'leri, rozetler, inline bar) uçları %100 yuvarlak
-  kapsüldür; CSS'te kapsül `999px` ile ifade edilir (kare olmayan kutuda `100%`
-  elips bozulması yaratır).
+- Kural: `border-radius` en fazla **8px** (0.5rem) — shell, menü kartları,
+  yanıt alanı, logo, rapor kartları, modallar, tüm diğer yüzeyler.
+- **İstisnalar (tam yuvarlak kalır):** AI sorgu alanı (`AiSearchComposer`
+  kapsülü), öneri pill'leri (`AiQuerySuggestionList`) ve AI orb + yuvarlak
+  aksiyon butonları/noktalar (`100%`).
+- Teknik not: daire (kare kutu) için `100%`, kapsül (dikdörtgen kutu) için
+  `999px` kullanılır — kare olmayan kutuda `100%` elips bozulması yaratır.
 
 ## Motion koreografisi
 
