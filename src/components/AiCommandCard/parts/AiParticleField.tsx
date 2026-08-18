@@ -1,31 +1,28 @@
 import styles from "./AiParticleField.module.css";
 
 /**
- * Deterministic particle offsets — no per-render randomness, so renders are
- * stable and reduced-motion snapshots stay reproducible.
+ * Takımyıldız alanı: 5 deterministik nokta, 12 sn'lik sonsuz döngüde farklı
+ * formasyonlar kurar (3'lü → 5'li → 4'lü), görünür nokta sayısı 2-5 arasında
+ * değişir. Noktalar taban ölçüsünü korur; derinlik hissi scale 1x↔2x
+ * (yakınlaşma/uzaklaşma) ile verilir. Randomsuz — her render aynı.
  */
-const PARTICLES: readonly { top: string; left: string; dx: string; dy: string; delay: string }[] = [
-  { top: "18%", left: "20%", dx: "2px", dy: "-3px", delay: "0s" },
-  { top: "26%", left: "72%", dx: "-2px", dy: "-2px", delay: "0.6s" },
-  { top: "68%", left: "26%", dx: "3px", dy: "2px", delay: "1.2s" },
-  { top: "74%", left: "66%", dx: "-3px", dy: "3px", delay: "1.8s" },
+const PARTICLES: readonly { className: string; top: string; left: string }[] = [
+  { className: "particleA", top: "12%", left: "18%" },
+  { className: "particleB", top: "22%", left: "74%" },
+  { className: "particleC", top: "76%", left: "46%" },
+  { className: "particleD", top: "40%", left: "88%" },
+  { className: "particleE", top: "70%", left: "10%" },
 ];
 
-/** Decorative AI particles. Hidden from AT, never intercepts pointer events. */
+/** Decorative AI constellation. Hidden from AT, never intercepts pointers. */
 export function AiParticleField() {
   return (
     <span className={styles.particleField} data-slot="ai-particle-field" aria-hidden="true">
-      {PARTICLES.map((particle, index) => (
+      {PARTICLES.map((particle) => (
         <span
-          key={index}
-          className={styles.particle}
-          style={{
-            top: particle.top,
-            left: particle.left,
-            animationDelay: particle.delay,
-            ["--particle-dx" as string]: particle.dx,
-            ["--particle-dy" as string]: particle.dy,
-          }}
+          key={particle.className}
+          className={`${styles.particle} ${styles[particle.className]}`}
+          style={{ top: particle.top, left: particle.left }}
         />
       ))}
     </span>

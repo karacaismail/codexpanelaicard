@@ -1,4 +1,16 @@
-/* AiParticleField — orb çevresindeki dekoratif atomik partiküller. */
+/* AiParticleField — 12 sn'lik takımyıldız döngüsü.
+ *
+ * Zaman çizelgesi (12 sn = %100):
+ *   %0–30   3'lü formasyon (A, B, C)
+ *   %30–36  geçiş — yalnız A, B (2 nokta)
+ *   %36–63  5'li formasyon (hepsi)
+ *   %63–70  geçiş — sayı 4'e iner
+ *   %70–97  4'lü formasyon (A, B, D, E)
+ *   %97–100 döngü başına yumuşak dönüş
+ *
+ * Görünür sayı 2-5 arasında değişir; her nokta taban ölçüsünde kalır,
+ * yakınlaşma scale 2x / uzaklaşma 1x ile (toplam 3x algı aralığı) verilir.
+ */
 
 .particleField {
   position: absolute;
@@ -12,11 +24,73 @@
   block-size: 6px;
   border-radius: 100%;
   background: var(--ai-cc-accent);
-  opacity: 0.6;
-  animation: particleDrift 3.6s ease-in-out infinite;
+  /* Reduced-motion kill-switch animasyonu kapattığında da görünür kal. */
+  opacity: 0.55;
+  scale: 1;
+  animation-duration: 12s;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
 }
 
-@keyframes particleDrift {
-  0%, 100% { translate: 0 0; opacity: 0.42; }
-  50% { translate: var(--particle-dx, 2px) var(--particle-dy, -3px); opacity: 0.96; }
+.particleA { animation-name: constellationA; }
+.particleB { animation-name: constellationB; }
+.particleC { animation-name: constellationC; }
+.particleD { animation-name: constellationD; }
+.particleE { animation-name: constellationE; }
+
+/* A — her formasyonda var; iki kez yakınlaşıp uzaklaşır. */
+@keyframes constellationA {
+  0%   { opacity: 0.55; scale: 1;   translate: 0 0; }
+  15%  { opacity: 0.95; scale: 2;   translate: 2px 2px; }
+  30%  { opacity: 0.6;  scale: 1;   translate: 0 0; }
+  50%  { opacity: 0.9;  scale: 1.6; translate: -2px 1px; }
+  70%  { opacity: 0.6;  scale: 1;   translate: 0 0; }
+  85%  { opacity: 0.95; scale: 2;   translate: 1px -2px; }
+  100% { opacity: 0.55; scale: 1;   translate: 0 0; }
+}
+
+/* B — her formasyonda var; A ile zıt fazda nefes alır. */
+@keyframes constellationB {
+  0%   { opacity: 0.9;  scale: 1.8; translate: 0 0; }
+  20%  { opacity: 0.5;  scale: 1;   translate: -2px 2px; }
+  40%  { opacity: 0.95; scale: 2;   translate: 1px 1px; }
+  60%  { opacity: 0.55; scale: 1;   translate: 0 -2px; }
+  80%  { opacity: 0.9;  scale: 1.7; translate: -1px 0; }
+  100% { opacity: 0.9;  scale: 1.8; translate: 0 0; }
+}
+
+/* C — 3'lü ve 5'li formasyonlarda; 4'lü fazda kaybolur. */
+@keyframes constellationC {
+  0%   { opacity: 0.8;  scale: 1.4; translate: 0 0; }
+  15%  { opacity: 0.5;  scale: 1;   translate: 2px -1px; }
+  28%  { opacity: 0.85; scale: 1.8; translate: 0 2px; }
+  30%  { opacity: 0;    scale: 1;   translate: 0 2px; }
+  36%  { opacity: 0.85; scale: 1.6; translate: -1px 0; }
+  55%  { opacity: 0.95; scale: 2;   translate: 1px 1px; }
+  63%  { opacity: 0;    scale: 1;   translate: 0 0; }
+  97%  { opacity: 0;    scale: 1;   translate: 0 0; }
+  100% { opacity: 0.8;  scale: 1.4; translate: 0 0; }
+}
+
+/* D — yalnız 5'li ve 4'lü formasyonlarda. */
+@keyframes constellationD {
+  0%   { opacity: 0;    scale: 1;   translate: 0 0; }
+  34%  { opacity: 0;    scale: 1;   translate: 0 0; }
+  40%  { opacity: 0.85; scale: 1.5; translate: -2px 1px; }
+  58%  { opacity: 0.95; scale: 2;   translate: 0 -2px; }
+  75%  { opacity: 0.6;  scale: 1;   translate: 2px 0; }
+  90%  { opacity: 0.9;  scale: 1.8; translate: 0 1px; }
+  97%  { opacity: 0;    scale: 1;   translate: 0 0; }
+  100% { opacity: 0;    scale: 1;   translate: 0 0; }
+}
+
+/* E — yalnız 5'li ve 4'lü formasyonlarda; D'den farklı fazda. */
+@keyframes constellationE {
+  0%   { opacity: 0;    scale: 1;   translate: 0 0; }
+  36%  { opacity: 0;    scale: 1;   translate: 0 0; }
+  45%  { opacity: 0.9;  scale: 1.9; translate: 1px -1px; }
+  63%  { opacity: 0.55; scale: 1;   translate: -1px 1px; }
+  82%  { opacity: 0.95; scale: 2;   translate: 0 2px; }
+  95%  { opacity: 0.5;  scale: 1.2; translate: 0 0; }
+  100% { opacity: 0;    scale: 1;   translate: 0 0; }
 }
