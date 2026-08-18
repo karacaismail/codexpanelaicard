@@ -1,4 +1,5 @@
 import type * as React from "react";
+import { CaretDown } from "@phosphor-icons/react";
 import {
   useCallback,
   useEffect,
@@ -92,6 +93,7 @@ export function AiCommandCard({
   const [queryValue, setQueryValue] = useState("");
   const [queryState, setQueryState] = useState<AiQueryState>("idle");
   const [aiResponse, setAiResponse] = useState<React.ReactNode>(null);
+  const [hasMoreContentBelow, setHasMoreContentBelow] = useState(false);
 
   /* ------------------------------------------------ expansion lifecycle */
 
@@ -229,6 +231,30 @@ export function AiCommandCard({
     document.addEventListener("pointerdown", onPointerDown);
     return () => document.removeEventListener("pointerdown", onPointerDown);
   }, [isCardExpanded, requestCardCollapse]);
+
+  // Scroll cue: while more cards wait below the fold, a bottom fade + drifting
+  // caret hints at them; it clears as the user reaches the end.
+  useEffect(() => {
+    const region = expandedRegionRef.current;
+    if (!region || !isCardExpanded) {
+      setHasMoreContentBelow(false);
+      return;
+    }
+    const update = () => {
+      setHasMoreContentBelow(
+        region.scrollHeight - region.scrollTop - region.clientHeight > 8,
+      );
+    };
+    update();
+    region.addEventListener("scroll", update, { passive: true });
+    const resizeObserver =
+      typeof ResizeObserver !== "undefined" ? new ResizeObserver(update) : null;
+    resizeObserver?.observe(region);
+    return () => {
+      region.removeEventListener("scroll", update);
+      resizeObserver?.disconnect();
+    };
+  }, [isCardExpanded, expansionState, aiResponse, queryState]);
 
   // Orb migration (FLIP): measure the vector from the orb's header anchor to
   // the composer slot and let CSS translate it there. Re-measured when the
@@ -414,6 +440,15 @@ export function AiCommandCard({
             onSuggestionSelect={handleSuggestionSelect}
           />
           <AiCommandMenuGrid menuItems={menuItems} onMenuItemSelect={handleMenuItemSelect} />
+        </div>
+
+        <div
+          className={styles.scrollHint}
+          data-visible={isCardExpanded && hasMoreContentBelow}
+          data-slot="ai-command-card-scroll-hint"
+          aria-hidden="true"
+        >
+          <CaretDown size={16} weight="bold" />
         </div>
       </section>
     </div>

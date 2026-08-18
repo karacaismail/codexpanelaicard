@@ -179,6 +179,42 @@
     visibility 0s;
 }
 
+/* ------------------------------------------------------------ scroll cue */
+
+/*
+ * "Aşağıda devamı var" sezgisi: içerik fold altına taşıyorsa alt kenarda
+ * yüzeye karışan bir solma + süzülen ok görünür; en alta inince kaybolur.
+ */
+.scrollHint {
+  position: absolute;
+  inset-inline: 1px;
+  inset-block-end: 1px;
+  block-size: 56px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-block-end: 6px;
+  background: linear-gradient(180deg, transparent 0%, var(--ai-cc-surface) 78%);
+  color: var(--ai-cc-text-muted);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 220ms ease;
+  z-index: 2;
+}
+
+.scrollHint[data-visible="true"] {
+  opacity: 1;
+}
+
+.scrollHint svg {
+  animation: scrollHintBob 1.6s ease-in-out infinite;
+}
+
+@keyframes scrollHintBob {
+  0%, 100% { translate: 0 0; opacity: 0.6; }
+  50% { translate: 0 4px; opacity: 1; }
+}
+
 /* --------------------------------------------------------- reduced motion */
 
 .host[data-motion="reduced"] .shell,
