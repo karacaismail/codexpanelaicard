@@ -1,11 +1,13 @@
-import { StrictMode, useLayoutEffect, useRef, useState } from "react";
+import { StrictMode, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   ArrowsClockwise,
   ArrowsOutSimple,
+  CornersOut,
   DeviceMobile,
   DeviceTablet,
   Monitor,
+  X,
 } from "@phosphor-icons/react";
 import "./demo.css";
 
@@ -31,8 +33,19 @@ const DEVICES: Record<
 function DevicePreviewApp() {
   const [device, setDevice] = useState<DeviceKind>("phone");
   const [orientation, setOrientation] = useState<Orientation>("portrait");
+  const [isFullscreen, setIsFullscreen] = useState(false);
   const stageRef = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(1);
+
+  // Tam ekran incelemeden Escape ile çıkılır.
+  useEffect(() => {
+    if (!isFullscreen) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsFullscreen(false);
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [isFullscreen]);
 
   const preset = device === "fluid" ? null : DEVICES[device];
   const rotated = orientation === "landscape";
@@ -59,7 +72,18 @@ function DevicePreviewApp() {
   const frameSrc = `${import.meta.env.BASE_URL}frame.html`;
 
   return (
-    <div className="previewShell">
+    <div className="previewShell" data-fullscreen={isFullscreen}>
+      {isFullscreen ? (
+        <button
+          type="button"
+          className="fullscreenExit"
+          aria-label="Tam ekrandan çık"
+          title="Tam ekrandan çık (Esc)"
+          onClick={() => setIsFullscreen(false)}
+        >
+          <X size={16} />
+        </button>
+      ) : null}
       <header className="previewToolbar">
         <span className="previewTitle">AiCommandCard — Cihaz Önizleme</span>
         <div className="toolbarGroup" role="group" aria-label="Cihaz seçimi">
@@ -108,6 +132,15 @@ function DevicePreviewApp() {
           >
             <ArrowsClockwise size={15} />
             {orientation === "portrait" ? "Dikey" : "Yatay"}
+          </button>
+        </div>
+        <div className="toolbarGroup">
+          <button
+            type="button"
+            className="toolbarButton"
+            onClick={() => setIsFullscreen(true)}
+          >
+            <CornersOut size={15} /> Tam Ekran
           </button>
         </div>
         <span className="toolbarHint">

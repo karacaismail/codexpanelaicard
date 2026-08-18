@@ -81,6 +81,43 @@ body {
   white-space: nowrap;
 }
 
+/* ------------------------------------------------------------ fullscreen */
+
+/* Tam ekran inceleme: tüm kontroller gizlenir, sahne pencereyi kaplar;
+ * yalnızca köşedeki küçük çıkış butonu kalır (Esc de çıkar). */
+.previewShell[data-fullscreen="true"] .previewToolbar,
+.previewShell[data-fullscreen="true"] .deviceMeta {
+  display: none;
+}
+
+.previewShell[data-fullscreen="true"] .previewStage {
+  padding: 0;
+}
+
+.fullscreenExit {
+  position: fixed;
+  inset-block-start: 10px;
+  inset-inline-end: 10px;
+  z-index: 60;
+  display: inline-grid;
+  place-items: center;
+  inline-size: 32px;
+  block-size: 32px;
+  border: 1px solid #2c323c;
+  border-radius: 100%;
+  background: rgba(16, 19, 24, 0.72);
+  color: #e8eaee;
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity 140ms ease;
+}
+
+.fullscreenExit:hover,
+.fullscreenExit:focus-visible {
+  opacity: 1;
+  outline: none;
+}
+
 /* ---------------------------------------------------------------- stage */
 
 .previewStage {
