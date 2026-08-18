@@ -273,8 +273,12 @@ export function AiCommandCard({
       }
       const homeRect = home.getBoundingClientRect();
       const slotRect = slot.getBoundingClientRect();
-      const dx = slotRect.left + slotRect.width / 2 - (homeRect.left + homeRect.width / 2);
-      const dy = slotRect.top + slotRect.height / 2 - (homeRect.top + homeRect.height / 2);
+      // Orb her zaman yuvanın SOL kenarına oturur; yuva açıkken 0 genişliğe
+      // indiği için merkez yerine sol kenar + buton yarı genişliği esas alınır.
+      const originX = homeRect.left + trigger.offsetWidth / 2;
+      const originY = homeRect.top + trigger.offsetHeight / 2;
+      const dx = slotRect.left + slotRect.width / 2 - originX;
+      const dy = slotRect.top + slotRect.height / 2 - originY;
       trigger.style.setProperty("--orb-travel-x", `${dx.toFixed(1)}px`);
       trigger.style.setProperty("--orb-travel-y", `${dy.toFixed(1)}px`);
     };
