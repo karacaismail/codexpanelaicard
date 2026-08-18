@@ -131,6 +131,15 @@ describe("AiCommandCard", () => {
     expect(getShell()).toHaveAttribute("data-state", "collapsed");
   });
 
+  it("collapses when the user clicks outside the card", async () => {
+    const user = userEvent.setup();
+    renderCard();
+    await expandViaTrigger(user);
+
+    await user.click(document.body);
+    await waitFor(() => expect(getShell()).toHaveAttribute("data-state", "collapsed"));
+  });
+
   it("expands from a click on the empty collapsed surface", async () => {
     const user = userEvent.setup();
     renderCard();

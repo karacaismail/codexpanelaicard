@@ -6,6 +6,7 @@ export type AiCommandCardExpansionReason =
   | "collapsed-surface-activation"
   | "escape-key"
   | "close-action"
+  | "outside-interaction"
   | "controlled-prop";
 
 /** Lifecycle of the single persistent shell. Mirrored on `data-state`. */

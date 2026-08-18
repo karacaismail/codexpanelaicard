@@ -40,6 +40,32 @@
   box-sizing: border-box;
 }
 
+/*
+ * Layer separation while open: a visual-only scrim (middle layer) slides in
+ * between the card (top layer) and the rest of the page (bottom layer) —
+ * 2px blur + translucent cool grey. pointer-events stays off so it is not a
+ * modal backdrop: the page remains scrollable and an outside click reaches
+ * the document, where the controller collapses the card.
+ */
+.host::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: rgba(100, 116, 139, 0.35);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--ai-command-card-collapse-duration) ease;
+}
+
+.host[data-state="expanding"]::before,
+.host[data-state="expanded"]::before {
+  opacity: 1;
+  transition-duration: var(--ai-command-card-expand-duration);
+}
+
 /* ------------------------------------------------------------------ shell */
 
 /*
@@ -84,6 +110,13 @@
 .shell[data-state="expanding"],
 .shell[data-state="collapsing"] {
   will-change: inline-size, block-size;
+}
+
+/* Keep the card above the scrim for the whole open/close cycle. */
+.shell[data-state="expanding"],
+.shell[data-state="expanded"],
+.shell[data-state="collapsing"] {
+  z-index: 31;
 }
 
 /* ----------------------------------------------------------------- header */
@@ -729,6 +762,11 @@
 /* Icon-less items: let the title take the whole first row. */
 .menuItemButton:not(:has(.menuItemIcon)) .menuItemLabel {
   grid-column: 1 / -1;
+}
+
+/* Badge'li kartta başlık, köşedeki rozetin altına girmesin. */
+.menuItemButton:has(.menuItemBadge) .menuItemLabel {
+  padding-inline-end: 38px;
 }
 
 .menuItemDescription {

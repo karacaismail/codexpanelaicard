@@ -189,6 +189,19 @@ export function AiCommandCard({
     }
   }, [isCardExpanded]);
 
+  // Outside interaction: clicking anywhere off the card collapses it.
+  useEffect(() => {
+    if (!isCardExpanded) return;
+    const onPointerDown = (event: PointerEvent) => {
+      const shell = shellRef.current;
+      if (shell && !shell.contains(event.target as Node)) {
+        requestCardCollapse("outside-interaction");
+      }
+    };
+    document.addEventListener("pointerdown", onPointerDown);
+    return () => document.removeEventListener("pointerdown", onPointerDown);
+  }, [isCardExpanded, requestCardCollapse]);
+
   // Orb migration (FLIP): measure the vector from the orb's header anchor to
   // the composer slot and let CSS translate it there. Re-measured when the
   // animation settles ("expanded") and on resize, so late layout shifts are
@@ -318,6 +331,7 @@ export function AiCommandCard({
       className={`${styles.host} ${className ?? ""}`}
       data-slot="ai-command-card-host"
       data-motion={motion}
+      data-state={expansionState}
     >
       <section
         ref={shellRef}

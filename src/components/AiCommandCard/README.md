@@ -86,7 +86,11 @@ yalnız transform+opacity. `prefers-reduced-motion` (veya
 
 - Shell `section` + `aria-label` (root button değildir).
 - `AiCommandTrigger` gerçek button; `aria-expanded` + `aria-controls`.
-- Enter/Space açar, Escape kapatır; kapanınca odak trigger'a döner.
+- Enter/Space açar, Escape kapatır; kart dışına tıklamak da kapatır
+  (`outside-interaction`); kapanınca odak trigger'a döner.
+- Açıkken host, kart ile sayfa arasına görsel bir orta katman koyar: 2px blur +
+  cool-grey scrim (`.host::before`, `pointer-events: none`) — modal backdrop
+  değildir; sayfa kaydırılabilir kalır ve kart document flow'dan çıkmaz.
 - Trigger ile açılışta odak, animasyon **tamamlandıktan sonra** input'a gider.
 - Collapsed'da gizli içerik `inert` + `aria-hidden`: odak ve SR dışı.
 - Bildirim/logo tıklamaları expansion'ı tetiklemez (interactive child isolation).
