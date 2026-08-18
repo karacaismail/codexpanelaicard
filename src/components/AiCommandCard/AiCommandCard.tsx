@@ -19,6 +19,7 @@ import type {
   AiQueryState,
 } from "./AiCommandCard.types";
 import { isVisuallyExpanded, transitionExpansionState } from "./AiCommandCard.machine";
+import { useAiDeviceClass } from "./AiCommandCard.device";
 import {
   COLLAPSE_DURATION_MS,
   EXPAND_DURATION_MS,
@@ -67,6 +68,7 @@ export function AiCommandCard({
   const reactId = useId();
   const expandedContentId = `${id ?? reactId}-expanded-content`;
   const motion = useResolvedMotion(motionPreference);
+  const { deviceClass, orientation } = useAiDeviceClass();
   const isControlled = expanded !== undefined;
 
   const [expansionState, dispatchExpansionEvent] = useReducer(
@@ -467,6 +469,8 @@ export function AiCommandCard({
       data-slot="ai-command-card-host"
       data-motion={motion}
       data-state={expansionState}
+      data-device={deviceClass}
+      data-orientation={orientation}
     >
       <section
         ref={shellRef}

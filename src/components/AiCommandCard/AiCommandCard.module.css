@@ -228,16 +228,15 @@
   animation: none !important;
 }
 
-@media (min-width: 768px) {
-  .host {
-    padding-inline: 24px;
-  }
+/* Adaptive cihaz blokları (320 iPhone 4 FIRST — taban .host'un kendisidir;
+ * büyük cihazlar data-device damgasıyla ayrı kodlanır). */
+.host[data-device="tablet"],
+.host[data-device="desktop"] {
+  padding-inline: 24px;
 }
 
-/* Dikey ekranda açık kart, ekran yüksekliğinin ~%84'ünü kaplar
- * (yatay/masaüstünde 520px hedefi geçerli kalır). */
-@media (orientation: portrait) {
-  .host {
-    --ai-command-card-expanded-height: 84dvh;
-  }
+/* Dikey yönde açık kart, ekran yüksekliğinin ~%84'ünü kaplar
+ * (yatayda 520px hedefi geçerli kalır). */
+.host[data-orientation="portrait"] {
+  --ai-command-card-expanded-height: 84dvh;
 }
