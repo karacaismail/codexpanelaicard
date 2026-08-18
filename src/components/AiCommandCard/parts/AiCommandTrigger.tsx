@@ -42,7 +42,7 @@ export const AiCommandTrigger = forwardRef<HTMLButtonElement, AiCommandTriggerPr
       >
         <span className={styles.aiOrbGlow} aria-hidden="true" />
         <span className={styles.aiOrb} aria-hidden="true">
-          <AiMorphingStar size={18} />
+          <AiMorphingStar size={24} />
         </span>
         <AiParticleField />
       </button>

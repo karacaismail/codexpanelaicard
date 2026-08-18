@@ -23,7 +23,6 @@
   /* Yıldız glifinin okunabilmesi için taban 6px; scale 2x'te 12px olur. */
   inline-size: 6px;
   block-size: 6px;
-  color: var(--ai-cc-accent);
   /* Reduced-motion kill-switch animasyonu kapattığında da görünür kal. */
   opacity: 0.55;
   scale: 1;
@@ -39,11 +38,25 @@
   fill: currentColor;
 }
 
-.particleA { animation-name: constellationA; }
-.particleB { animation-name: constellationB; }
-.particleC { animation-name: constellationC; }
-.particleD { animation-name: constellationD; }
-.particleE { animation-name: constellationE; }
+/* Her uydu: formasyon animasyonu + 24sn gökkuşağı renk döngüsü. Negatif
+ * gecikmeler fazları 1/5 tur kaydırır — uydular hep birbirinden farklı
+ * renkte kalır; doygunluk %80, açıklık %60 sabit (çamurlaşma yok). Taban
+ * renkler reduced-motion'da statik yedek. */
+.particleA { animation: constellationA 12s ease-in-out infinite, satelliteRainbow 24s linear infinite; color: hsl(4, 80%, 60%); }
+.particleB { animation: constellationB 12s ease-in-out infinite, satelliteRainbow 24s linear -4.8s infinite; color: hsl(76, 80%, 60%); }
+.particleC { animation: constellationC 12s ease-in-out infinite, satelliteRainbow 24s linear -9.6s infinite; color: hsl(148, 80%, 60%); }
+.particleD { animation: constellationD 12s ease-in-out infinite, satelliteRainbow 24s linear -14.4s infinite; color: hsl(220, 80%, 60%); }
+.particleE { animation: constellationE 12s ease-in-out infinite, satelliteRainbow 24s linear -19.2s infinite; color: hsl(292, 80%, 60%); }
+
+@keyframes satelliteRainbow {
+  0%   { color: hsl(4, 80%, 60%); }
+  16.7% { color: hsl(64, 80%, 60%); }
+  33.3% { color: hsl(124, 80%, 60%); }
+  50%  { color: hsl(184, 80%, 60%); }
+  66.7% { color: hsl(244, 80%, 60%); }
+  83.3% { color: hsl(304, 80%, 60%); }
+  100% { color: hsl(4, 80%, 60%); }
+}
 
 /* A — her formasyonda var; iki kez yakınlaşıp uzaklaşır. */
 @keyframes constellationA {

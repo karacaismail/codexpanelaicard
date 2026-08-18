@@ -17,14 +17,16 @@ const STAR_4 =
 
 const EASE = "0.65 0 0.35 1";
 
-export function AiMorphingStar({ size = 18 }: { size?: number }) {
+/* Yıldızın içi ve çizgisi kendi taban renklerini taşır; butondaki 24sn'lik
+ * hue-rotate döngüsü bu tabanları gökkuşağı gibi sürekli kaydırır. */
+export function AiMorphingStar({ size = 24 }: { size?: number }) {
   return (
     <svg viewBox="0 0 24 24" width={size} height={size}>
       <path
         d={STAR_5}
-        fill="none"
-        stroke="currentColor"
-        strokeWidth={2}
+        fill="hsla(325, 85%, 75%, 0.45)"
+        stroke="hsl(52, 95%, 82%)"
+        strokeWidth={2.7}
         strokeLinejoin="round"
         strokeLinecap="round"
       >
@@ -37,6 +39,20 @@ export function AiMorphingStar({ size = 18 }: { size?: number }) {
           keyTimes="0;0.24;0.32;0.57;0.65;0.92;1"
           calcMode="spline"
           keySplines={`${EASE};${EASE};${EASE};${EASE};${EASE};${EASE}`}
+        />
+        {/* Çizgi rengi: 24sn gökkuşağı — doygunluk %95, açıklık %82 sabit. */}
+        <animate
+          attributeName="stroke"
+          dur="24s"
+          repeatCount="indefinite"
+          values="hsl(52,95%,82%);hsl(112,95%,82%);hsl(172,95%,82%);hsl(232,95%,82%);hsl(292,95%,82%);hsl(352,95%,82%);hsl(52,95%,82%)"
+        />
+        {/* İç dolgu: 24sn gökkuşağı — doygunluk %85, açıklık %75, alfa 0.45. */}
+        <animate
+          attributeName="fill"
+          dur="24s"
+          repeatCount="indefinite"
+          values="hsla(325,85%,75%,0.45);hsla(25,85%,75%,0.45);hsla(85,85%,75%,0.45);hsla(145,85%,75%,0.45);hsla(205,85%,75%,0.45);hsla(265,85%,75%,0.45);hsla(325,85%,75%,0.45)"
         />
       </path>
     </svg>

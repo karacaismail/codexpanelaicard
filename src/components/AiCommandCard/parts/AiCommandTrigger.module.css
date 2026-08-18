@@ -37,18 +37,35 @@
   block-size: 32px;
   border-radius: 100%;
   color: #fff;
-  background: #6c63ee;
-  border: 1px solid rgba(35, 26, 112, 0.55);
+  /* "Yıldızın dışı": kendi taban rengi; hue döngüsüyle sürekli değişir.
+   * Gölgelendirme kontrastı bilinçli olarak düşük tutuldu. */
+  background: hsl(244, 62%, 68%);
+  border: 1px solid rgba(35, 26, 112, 0.35);
   box-shadow:
-    /* üstten içe çöküş: merkez çukur */
-    inset 0 4px 6px rgba(24, 16, 72, 0.55),
-    inset 0 1px 2px rgba(24, 16, 72, 0.4),
-    /* alt iç kenarda dışbükey kabarma ışığı */
-    inset 0 -4px 5px rgba(255, 255, 255, 0.45),
-    inset 0 -1px 1px rgba(255, 255, 255, 0.65),
+    /* üstten içe çöküş: merkez çukur (yumuşatılmış) */
+    inset 0 4px 6px rgba(24, 16, 72, 0.32),
+    inset 0 1px 2px rgba(24, 16, 72, 0.22),
+    /* alt iç kenarda dışbükey kabarma ışığı (yumuşatılmış) */
+    inset 0 -4px 5px rgba(255, 255, 255, 0.28),
+    inset 0 -1px 1px rgba(255, 255, 255, 0.4),
     /* butonun zemine oturma gölgesi */
-    0 2px 3px rgba(30, 20, 90, 0.45);
-  animation: aiHeartbeat 5s ease-in-out infinite;
+    0 2px 3px rgba(30, 20, 90, 0.3);
+  /* Gövde ("yıldızın dışı") gökkuşağı: hue-rotate filtresi renkleri
+   * çamurlaştırdığı için gerçek HSL duraklarıyla döner — doygunluk %62,
+   * açıklık %68 sabit; 24 sn'de tam tur. */
+  animation:
+    aiHeartbeat 5s ease-in-out infinite,
+    orbBodyRainbow 24s linear infinite;
+}
+
+@keyframes orbBodyRainbow {
+  0%   { background-color: hsl(244, 62%, 68%); }
+  16.7% { background-color: hsl(304, 62%, 68%); }
+  33.3% { background-color: hsl(4, 62%, 68%); }
+  50%  { background-color: hsl(64, 62%, 68%); }
+  66.7% { background-color: hsl(124, 62%, 68%); }
+  83.3% { background-color: hsl(184, 62%, 68%); }
+  100% { background-color: hsl(244, 62%, 68%); }
 }
 
 .aiOrbGlow {
