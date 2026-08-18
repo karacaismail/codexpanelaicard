@@ -1,12 +1,8 @@
 /* AiCommandMenuGrid — Excel gibi birleşik ızgara.
- * SÜTUN KURALI (değişmez): yan yana EN FAZLA 3 kart — tüm cihazlar,
- * yatay/dikey fark etmez. Adet sınırları cihaz sınıfına göre:
- *   desktop / tablet yatay : maks 10 adet (3 sütun)
- *   tablet dikey           : maks 8 adet (3 sütun)
- *   telefon yatay          : maks 6 adet (3 sütun)
- *   telefon dikey          : maks 10 adet (2 sütun, condensed font)
- *   tek sütun (<240px)     : maks 5 adet
- * Fazla item'lar CSS ile gizlenir; veri modeli değişmez. */
+ * DEĞİŞMEZ KURALLAR:
+ *   - Yan yana EN FAZLA 3 kart — tüm cihazlar, yatay/dikey fark etmez.
+ *   - En fazla 12 kart gösterilir.
+ * Telefon dikey 2 sütun (condensed font), çok dar (<240px) tek sütun. */
 
 .menuGrid {
   display: grid;
@@ -20,47 +16,22 @@
   border-inline-start: 1px solid var(--ai-cc-border);
 }
 
-/* Telefon dikey (varsayılan): 2 sütun, en fazla 10 adet (5 satır). */
-.menuGrid > :nth-child(n + 11) {
+/* Maks 12 kart. */
+.menuGrid > :nth-child(n + 13) {
   display: none;
 }
 
-/* Tek sütun güvenliği (çok dar): en fazla 5 satır. */
+/* Çok dar güvenlik: tek sütun. */
 @media (max-width: 239px) {
   .menuGrid {
     grid-template-columns: minmax(0, 1fr);
   }
-  .menuGrid > :nth-child(n + 6) {
-    display: none;
-  }
 }
 
-/* Telefon yatay: 3 sütun × 2 satır, en fazla 6 adet. */
-@media (orientation: landscape) and (max-width: 767px) {
+/* Telefon yatay ve daha genişi: 3 sütun (maks 3 kuralı). */
+@media (orientation: landscape) and (max-width: 767px),
+  (min-width: 768px) {
   .menuGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  .menuGrid > :nth-child(n + 7) {
-    display: none;
-  }
-}
-
-/* Tablet dikey: 3 sütun (SÜTUN KURALI: her cihazda maks 3), en fazla 8 adet. */
-@media (orientation: portrait) and (min-width: 768px) {
-  .menuGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  .menuGrid > :nth-child(n + 9) {
-    display: none;
-  }
-}
-
-/* Tablet yatay + desktop: 3 sütun (maks 3 kuralı), en fazla 10 adet. */
-@media (orientation: landscape) and (min-width: 768px) {
-  .menuGrid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-  .menuGrid > :nth-child(n + 11) {
-    display: none;
   }
 }
