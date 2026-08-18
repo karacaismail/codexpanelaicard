@@ -20,8 +20,8 @@
 
 .particle {
   position: absolute;
-  inline-size: 6px;
-  block-size: 6px;
+  inline-size: 4px;
+  block-size: 4px;
   border-radius: 100%;
   background: var(--ai-cc-accent);
   /* Reduced-motion kill-switch animasyonu kapattığında da görünür kal. */

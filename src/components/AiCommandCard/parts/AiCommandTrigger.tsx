@@ -1,5 +1,5 @@
 import { forwardRef } from "react";
-import { Pentagram } from "@phosphor-icons/react";
+import { Star } from "@phosphor-icons/react";
 import base from "./actionBase.module.css";
 import styles from "./AiCommandTrigger.module.css";
 import { AiParticleField } from "./AiParticleField";
@@ -42,7 +42,7 @@ export const AiCommandTrigger = forwardRef<HTMLButtonElement, AiCommandTriggerPr
       >
         <span className={styles.aiOrbGlow} aria-hidden="true" />
         <span className={styles.aiOrb} aria-hidden="true">
-          <Pentagram size={19} weight="regular" />
+          <Star size={18} weight="regular" />
         </span>
         <AiParticleField />
       </button>
