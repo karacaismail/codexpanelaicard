@@ -1,0 +1,106 @@
+/* AiCommandMenuItem — admin ana menü kartı: ikon solda, başlık yanında,
+ * açıklama alt satırda, rozet sağ üst köşede. */
+
+.menuItem {
+  min-width: 0;
+}
+
+.menuItemButton {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 8px;
+  row-gap: 4px;
+  align-items: center;
+  align-content: start;
+  inline-size: 100%;
+  min-block-size: 64px;
+  border: 1px solid var(--ai-cc-border);
+  border-radius: 12px;
+  background: var(--ai-cc-surface);
+  padding: 10px;
+  text-align: start;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0;
+  translate: 0 8px;
+  transition:
+    opacity 240ms ease,
+    translate 240ms ease,
+    border-color var(--ai-command-card-hover-duration) ease,
+    box-shadow var(--ai-command-card-hover-duration) ease,
+    scale var(--ai-command-card-press-duration) ease;
+}
+
+/* Reveal: kart açılırken --menu-item-index'e göre stagger ile belirir. */
+[data-slot="ai-command-card-shell"][data-state="expanding"] .menuItemButton,
+[data-slot="ai-command-card-shell"][data-state="expanded"] .menuItemButton {
+  opacity: 1;
+  translate: 0 0;
+  transition-delay:
+    calc(var(--ai-command-card-reveal-delay) + var(--menu-item-index, 0) * var(--ai-command-card-item-stagger)),
+    calc(var(--ai-command-card-reveal-delay) + var(--menu-item-index, 0) * var(--ai-command-card-item-stagger)),
+    0s, 0s, 0s;
+}
+
+.menuItemButton:not(:disabled):hover {
+  border-color: var(--ai-cc-accent);
+  box-shadow: 0 2px 8px rgba(16, 24, 40, 0.1);
+}
+
+.menuItemButton:not(:disabled):active {
+  scale: 0.98;
+}
+
+.menuItemButton:focus-visible {
+  outline: none;
+  box-shadow: var(--ai-cc-focus-ring);
+}
+
+.menuItemButton:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.menuItemIcon {
+  display: inline-grid;
+  place-items: center;
+  color: var(--ai-cc-accent);
+}
+
+.menuItemLabel {
+  font-size: 13px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+/* İkonsuz kartta başlık ilk satırın tamamını alır. */
+.menuItemButton:not(:has(.menuItemIcon)) .menuItemLabel {
+  grid-column: 1 / -1;
+}
+
+/* Rozetli kartta başlık köşedeki rozetin altına girmez. */
+.menuItemButton:has(.menuItemBadge) .menuItemLabel {
+  padding-inline-end: 38px;
+}
+
+.menuItemDescription {
+  grid-column: 1 / -1;
+  font-size: 12px;
+  color: var(--ai-cc-text-muted);
+  overflow-wrap: anywhere;
+}
+
+/* Sağ üst köşede yüzer; kartın grid ölçülerine katılmaz. */
+.menuItemBadge {
+  position: absolute;
+  inset-block-start: 6px;
+  inset-inline-end: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ai-cc-accent);
+  background: var(--ai-cc-accent-soft);
+  border-radius: 999px;
+  padding: 2px 8px;
+  pointer-events: none;
+}

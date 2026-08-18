@@ -4,7 +4,7 @@ import { PartStoryShell } from "./partStoryShell";
 import { AiQuerySuggestionList } from "./AiQuerySuggestionList";
 import { demoQuerySuggestions } from "../AiCommandCard.fixtures";
 
-const meta: Meta = { title: "AiCommandCard/Parts/AiQuerySuggestionList" };
+const meta: Meta = { title: "AiCommandCard/Parçalar/AiQuerySuggestionList" };
 export default meta;
 type Story = StoryObj;
 

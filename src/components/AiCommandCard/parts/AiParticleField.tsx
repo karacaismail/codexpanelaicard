@@ -1,4 +1,4 @@
-import styles from "../AiCommandCard.module.css";
+import styles from "./AiParticleField.module.css";
 
 /**
  * Deterministic particle offsets — no per-render randomness, so renders are

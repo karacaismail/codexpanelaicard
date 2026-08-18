@@ -16,6 +16,7 @@ export function PartStoryShell({
     <div className={styles.host}>
       <section
         className={styles.shell}
+        data-slot="ai-command-card-shell"
         data-state={state}
         style={{ blockSize: "auto", minBlockSize: 0, padding: 12 }}
       >

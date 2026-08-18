@@ -1,5 +1,5 @@
 import type { AiCommandBreadcrumbItem } from "../AiCommandCard.types";
-import styles from "../AiCommandCard.module.css";
+import styles from "./AiCommandCardBreadcrumb.module.css";
 
 interface AiCommandCardBreadcrumbProps {
   breadcrumbs: readonly AiCommandBreadcrumbItem[];

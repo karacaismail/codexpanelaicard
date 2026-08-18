@@ -3,7 +3,8 @@ import type {
   AiCommandBreadcrumbItem,
   AiCommandProfileSummary,
 } from "../AiCommandCard.types";
-import styles from "../AiCommandCard.module.css";
+import styles from "./AiCommandCardHeader.module.css";
+import { AiCommandCardLogo } from "./AiCommandCardLogo";
 import { AiCommandCardBreadcrumb } from "./AiCommandCardBreadcrumb";
 import { AiCommandTrigger } from "./AiCommandTrigger";
 import { AiNotificationAction } from "./AiNotificationAction";
@@ -53,28 +54,7 @@ export function AiCommandCardHeader({
 }: AiCommandCardHeaderProps) {
   return (
     <div className={styles.header} data-slot="ai-command-card-header">
-      {onLogoActivate ? (
-        <button
-          type="button"
-          className={styles.logoAction}
-          data-slot="ai-command-card-logo"
-          aria-label="Ana sayfa"
-          onClick={(event) => {
-            event.stopPropagation();
-            onLogoActivate();
-          }}
-        >
-          {logo}
-        </button>
-      ) : (
-        <span
-          className={`${styles.logoAction} ${styles.logoStatic}`}
-          data-slot="ai-command-card-logo"
-          aria-hidden="true"
-        >
-          {logo}
-        </span>
-      )}
+      <AiCommandCardLogo logo={logo} onLogoActivate={onLogoActivate} />
 
       <AiCommandCardBreadcrumb breadcrumbs={breadcrumbs} isCardExpanded={isCardExpanded} />
 

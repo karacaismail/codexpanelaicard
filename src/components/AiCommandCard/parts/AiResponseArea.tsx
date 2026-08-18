@@ -1,7 +1,7 @@
 import { isValidElement, useEffect, useRef, useState, type ReactNode } from "react";
 import { Sparkle } from "@phosphor-icons/react";
 import type { AiQueryState } from "../AiCommandCard.types";
-import styles from "../AiCommandCard.module.css";
+import styles from "./AiResponseArea.module.css";
 
 interface AiResponseAreaProps {
   /** Plain string answers stream with a typewriter; rich nodes reveal at once. */

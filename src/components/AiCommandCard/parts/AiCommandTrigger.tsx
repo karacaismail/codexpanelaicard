@@ -1,6 +1,7 @@
 import { forwardRef } from "react";
 import { Atom } from "@phosphor-icons/react";
-import styles from "../AiCommandCard.module.css";
+import base from "./actionBase.module.css";
+import styles from "./AiCommandTrigger.module.css";
 import { AiParticleField } from "./AiParticleField";
 
 interface AiCommandTriggerProps {
@@ -32,7 +33,7 @@ export const AiCommandTrigger = forwardRef<HTMLButtonElement, AiCommandTriggerPr
       <button
         ref={ref}
         type="button"
-        className={`${styles.iconAction} ${styles.aiTrigger}`}
+        className={`${base.iconAction} ${styles.aiTrigger}`}
         data-slot="ai-command-trigger"
         aria-expanded={isCardExpanded}
         aria-controls={expandedContentId}

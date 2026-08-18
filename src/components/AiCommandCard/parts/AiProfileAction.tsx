@@ -1,5 +1,6 @@
 import type { AiCommandProfileSummary } from "../AiCommandCard.types";
-import styles from "../AiCommandCard.module.css";
+import base from "./actionBase.module.css";
+import styles from "./AiProfileAction.module.css";
 
 interface AiProfileActionProps {
   profile: AiCommandProfileSummary;
@@ -11,7 +12,7 @@ export function AiProfileAction({ profile, onProfileActivate }: AiProfileActionP
   return (
     <button
       type="button"
-      className={`${styles.iconAction} ${styles.profileAction} ${styles.expandedOnlyAction}`}
+      className={`${base.iconAction} ${styles.profileAction} ${styles.expandedOnlyAction}`}
       data-slot="ai-profile-action"
       aria-label={`Profil: ${profile.name}`}
       onClick={(event) => {

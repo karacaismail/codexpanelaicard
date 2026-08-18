@@ -7,7 +7,7 @@ import {
   RiskyCustomersReport,
 } from "../AiCommandCard.reports";
 
-const meta: Meta = { title: "AiCommandCard/Parts/AiResponseArea" };
+const meta: Meta = { title: "AiCommandCard/Parçalar/AiResponseArea" };
 export default meta;
 type Story = StoryObj;
 

@@ -1,5 +1,6 @@
 import { Bell } from "@phosphor-icons/react";
-import styles from "../AiCommandCard.module.css";
+import base from "./actionBase.module.css";
+import styles from "./AiNotificationAction.module.css";
 
 interface AiNotificationActionProps {
   notificationCount: number;
@@ -15,7 +16,7 @@ export function AiNotificationAction({
   return (
     <button
       type="button"
-      className={styles.iconAction}
+      className={base.iconAction}
       data-slot="ai-notification-action"
       aria-label={
         hasUnread

@@ -4,7 +4,7 @@ import { fn } from "@storybook/test";
 import { PartStoryShell } from "./partStoryShell";
 import { AiSearchComposer } from "./AiSearchComposer";
 
-const meta: Meta = { title: "AiCommandCard/Parts/AiSearchComposer" };
+const meta: Meta = { title: "AiCommandCard/Parçalar/AiSearchComposer" };
 export default meta;
 type Story = StoryObj;
 

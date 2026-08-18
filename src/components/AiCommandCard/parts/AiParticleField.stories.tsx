@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from "@storybook/react";
 import { PartStoryShell } from "./partStoryShell";
 import { AiParticleField } from "./AiParticleField";
 
-const meta: Meta = { title: "AiCommandCard/Parts/AiParticleField" };
+const meta: Meta = { title: "AiCommandCard/Parçalar/AiParticleField" };
 export default meta;
 type Story = StoryObj;
 

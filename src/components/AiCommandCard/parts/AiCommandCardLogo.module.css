@@ -1,0 +1,34 @@
+/* AiCommandCardLogo — marka ikonu; aksiyonlu veya statik. */
+
+.logoAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 32px;
+  block-size: 32px;
+  border: none;
+  border-radius: 10px;
+  background: var(--ai-cc-accent-soft);
+  color: var(--ai-cc-accent);
+  font-weight: 700;
+  cursor: pointer;
+  flex: 0 0 auto;
+  transition: opacity var(--ai-command-card-hover-duration) ease;
+}
+
+.logoAction:hover {
+  opacity: 0.85;
+}
+
+.logoAction:focus-visible {
+  outline: none;
+  box-shadow: var(--ai-cc-focus-ring);
+}
+
+.logoStatic {
+  cursor: default;
+}
+
+.logoStatic:hover {
+  opacity: 1;
+}

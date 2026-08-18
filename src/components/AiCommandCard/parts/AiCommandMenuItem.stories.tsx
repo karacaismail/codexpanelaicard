@@ -4,7 +4,7 @@ import { PartStoryShell } from "./partStoryShell";
 import { AiCommandMenuItemCard } from "./AiCommandMenuItem";
 import { demoMenuItems } from "../AiCommandCard.fixtures";
 
-const meta: Meta = { title: "AiCommandCard/Parts/AiCommandMenuItem" };
+const meta: Meta = { title: "AiCommandCard/Parçalar/AiCommandMenuItem" };
 export default meta;
 type Story = StoryObj;
 

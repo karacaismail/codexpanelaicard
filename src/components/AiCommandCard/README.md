@@ -113,16 +113,27 @@ desteklenir. Component veri fetch etmez; yalnızca callback üretir.
   NoHorizontalOverflowMobile320.
 - `AiCommandCard/Parts`: her mikro bileşen için izole story'ler.
 
-## Dosya sorumlulukları
+## Dosya sorumlulukları — lego kuralı
+
+Her mikro parça **kendi üçlüsüyle** bağımsızdır: `parts/<Ad>.tsx` +
+`parts/<Ad>.module.css` + `parts/<Ad>.stories.tsx`. Bir parçayı güncellemek
+için yalnızca bu üç dosyaya dokunulur; parçalar birbirinin CSS'ine erişmez.
+Parçalar durumu yalnızca kararlı sözleşmeden okur:
+`[data-slot="ai-command-card-shell"][data-state=...]` ve host'tan miras alınan
+`--ai-cc-*` / `--ai-command-card-*` tokenları. Ortak tek taban
+`parts/actionBase.module.css` (yuvarlak aksiyon butonu).
 
 | Dosya | Sorumluluk |
 |---|---|
-| `AiCommandCard.tsx` | Orkestrasyon: state, focus, callback'ler, layout |
+| `AiCommandCard.tsx` | Orkestrasyon: state, focus, callback'ler, orb FLIP |
 | `AiCommandCard.machine.ts` | Saf expansion geçiş fonksiyonu |
 | `AiCommandCard.motion.ts` | Süre sabitleri + reduced-motion çözümü |
-| `AiCommandCard.module.css` | Tokenlar, shell morph, reveal koreografisi |
+| `AiCommandCard.module.css` | SADECE tokenlar, scrim, shell morph, expanded region |
 | `AiCommandCard.types.ts` | Public sözleşmeler |
-| `parts/*` | Presentational mikro bileşenler |
+| `parts/<Ad>.{tsx,module.css,stories.tsx}` | Her lego parçasının tam sahipliği |
+
+Storybook düzeni: `AiCommandCard/Bütün Kart` (montaj) ve
+`AiCommandCard/Parçalar/<Ad>` (tek tek lego parçaları).
 
 ## Yapılmaması gerekenler
 

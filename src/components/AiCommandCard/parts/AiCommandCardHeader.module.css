@@ -1,0 +1,25 @@
+/* AiCommandCardHeader — iki durumun paylaştığı tek başlık satırı. */
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-block-size: calc(var(--ai-command-card-collapsed-height) - 2px);
+  padding-inline: 10px;
+  flex: 0 0 auto;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+/* Orb'un header'daki sabit ölçüm çapası; orb göç ederken kutusunu korur. */
+.triggerHome {
+  position: relative;
+  display: inline-flex;
+  inline-size: 44px;
+  block-size: 44px;
+}

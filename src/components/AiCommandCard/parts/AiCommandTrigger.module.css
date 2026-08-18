@@ -1,0 +1,86 @@
+/* AiCommandTrigger — AI orb. Bu parçanın TÜM görsel kimliği bu dosyada:
+ * liquid-glass orb, 5 sn kalp atışı, glow ve composer'a göç (translate). */
+
+.aiTrigger {
+  background: transparent;
+  border-color: transparent;
+  translate: 0 0;
+  transition: translate var(--ai-command-card-collapse-duration) var(--ai-command-card-easing);
+  z-index: 2;
+}
+
+.aiTrigger:hover {
+  background: transparent;
+}
+
+/* Orb göçü: kart açıkken controller'ın ölçtüğü --orb-travel-* vektörü kadar
+ * kayar (header'daki yuvadan composer'daki yuvaya). */
+[data-slot="ai-command-card-shell"][data-state="expanding"] .aiTrigger,
+[data-slot="ai-command-card-shell"][data-state="expanded"] .aiTrigger {
+  translate: var(--orb-travel-x, 0px) var(--orb-travel-y, 0px);
+  transition-duration: var(--ai-command-card-expand-duration);
+}
+
+/*
+ * Liquid-glass yüzey: küresel radial parlama yok; içe gömülü inset ışıklar,
+ * yarı saydam gradyan ve ince cam kenarı — 3B hissi bilinçli olarak düşük.
+ */
+.aiOrb {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  inline-size: 32px;
+  block-size: 32px;
+  border-radius: 999px;
+  color: #fff;
+  background: linear-gradient(
+    160deg,
+    rgba(129, 108, 245, 0.92) 0%,
+    rgba(99, 102, 241, 0.82) 52%,
+    rgba(196, 74, 230, 0.78) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.55),
+    inset 0 8px 12px -6px rgba(255, 255, 255, 0.35),
+    inset 0 -5px 10px -4px rgba(59, 33, 128, 0.5),
+    0 1px 3px rgba(99, 102, 241, 0.35);
+  backdrop-filter: blur(6px);
+  animation: aiHeartbeat 5s ease-in-out infinite;
+}
+
+.aiOrbGlow {
+  position: absolute;
+  inset: 2px;
+  border-radius: 999px;
+  background: radial-gradient(closest-side, rgba(139, 92, 246, 0.55), rgba(139, 92, 246, 0));
+  filter: blur(4px);
+  animation: aiHeartbeatGlow 5s ease-in-out infinite;
+}
+
+/* Kullanıcı yazarken/gönderirken ambient ritim durur. */
+[data-slot="ai-command-card-shell"][data-query-state="typing"] .aiOrb,
+[data-slot="ai-command-card-shell"][data-query-state="submitting"] .aiOrb,
+[data-slot="ai-command-card-shell"][data-query-state="typing"] .aiOrbGlow,
+[data-slot="ai-command-card-shell"][data-query-state="submitting"] .aiOrbGlow {
+  animation-play-state: paused;
+}
+
+/* Kalp atışı: lub (%8) — dub (%24) — 5 sn'lik döngünün kalanı dinlenme. */
+@keyframes aiHeartbeat {
+  0% { scale: 1; }
+  8% { scale: 1.14; }
+  16% { scale: 1; }
+  24% { scale: 1.1; }
+  36% { scale: 1; }
+  100% { scale: 1; }
+}
+
+@keyframes aiHeartbeatGlow {
+  0% { opacity: 0.35; scale: 1; }
+  8% { opacity: 1; scale: 1.5; }
+  16% { opacity: 0.45; scale: 1.1; }
+  24% { opacity: 0.9; scale: 1.4; }
+  36% { opacity: 0.35; scale: 1; }
+  100% { opacity: 0.35; scale: 1; }
+}

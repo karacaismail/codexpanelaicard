@@ -1,6 +1,6 @@
 import { forwardRef, type RefObject } from "react";
 import type { AiQueryState } from "../AiCommandCard.types";
-import styles from "../AiCommandCard.module.css";
+import styles from "./AiSearchComposer.module.css";
 
 interface AiSearchComposerProps {
   queryValue: string;

@@ -1,0 +1,22 @@
+/* AiParticleField — orb çevresindeki dekoratif atomik partiküller. */
+
+.particleField {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  inline-size: 3px;
+  block-size: 3px;
+  border-radius: 999px;
+  background: var(--ai-cc-accent);
+  opacity: 0.5;
+  animation: particleDrift 3.6s ease-in-out infinite;
+}
+
+@keyframes particleDrift {
+  0%, 100% { translate: 0 0; opacity: 0.35; }
+  50% { translate: var(--particle-dx, 2px) var(--particle-dy, -3px); opacity: 0.8; }
+}

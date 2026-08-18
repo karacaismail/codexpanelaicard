@@ -3,7 +3,7 @@ import { fn } from "@storybook/test";
 import { PartStoryShell } from "./partStoryShell";
 import { AiNotificationAction } from "./AiNotificationAction";
 
-const meta: Meta = { title: "AiCommandCard/Parts/AiNotificationAction" };
+const meta: Meta = { title: "AiCommandCard/Parçalar/AiNotificationAction" };
 export default meta;
 type Story = StoryObj;
 

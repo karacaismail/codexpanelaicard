@@ -12,7 +12,7 @@ import {
 } from "./AiCommandCard.fixtures";
 
 const meta = {
-  title: "AiCommandCard/AiCommandCard",
+  title: "AiCommandCard/Bütün Kart",
   component: AiCommandCard,
   args: {
     logo: demoLogo,

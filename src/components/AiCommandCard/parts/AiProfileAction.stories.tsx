@@ -4,7 +4,7 @@ import { PartStoryShell } from "./partStoryShell";
 import { AiProfileAction } from "./AiProfileAction";
 import { demoProfile } from "../AiCommandCard.fixtures";
 
-const meta: Meta = { title: "AiCommandCard/Parts/AiProfileAction" };
+const meta: Meta = { title: "AiCommandCard/Parçalar/AiProfileAction" };
 export default meta;
 type Story = StoryObj;
 

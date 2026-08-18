@@ -1,0 +1,23 @@
+/* AiCommandMenuGrid — 2/3/4 kolonlu responsive komut ızgarası.
+ * Container: expandedRegion (ai-command-region). */
+
+.menuGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@container ai-command-region (min-width: 640px) {
+  .menuGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@container ai-command-region (min-width: 900px) {
+  .menuGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}

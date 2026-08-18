@@ -1,5 +1,5 @@
 import type { AiQueryState } from "../AiCommandCard.types";
-import styles from "../AiCommandCard.module.css";
+import styles from "./AiCommandCardStatus.module.css";
 
 interface AiCommandCardStatusProps {
   queryState: AiQueryState;

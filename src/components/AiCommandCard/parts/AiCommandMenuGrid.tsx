@@ -1,5 +1,5 @@
 import type { AiCommandMenuItem } from "../AiCommandCard.types";
-import styles from "../AiCommandCard.module.css";
+import styles from "./AiCommandMenuGrid.module.css";
 import { AiCommandMenuItemCard } from "./AiCommandMenuItem";
 
 interface AiCommandMenuGridProps {

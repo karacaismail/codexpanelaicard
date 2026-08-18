@@ -3,7 +3,7 @@ import { PartStoryShell } from "./partStoryShell";
 import { AiCommandCardBreadcrumb } from "./AiCommandCardBreadcrumb";
 import { demoBreadcrumbs } from "../AiCommandCard.fixtures";
 
-const meta: Meta = { title: "AiCommandCard/Parts/AiCommandCardBreadcrumb" };
+const meta: Meta = { title: "AiCommandCard/Parçalar/AiCommandCardBreadcrumb" };
 export default meta;
 type Story = StoryObj;
 

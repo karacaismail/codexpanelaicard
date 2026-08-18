@@ -1,5 +1,5 @@
 import type { AiQuerySuggestion } from "../AiCommandCard.types";
-import styles from "../AiCommandCard.module.css";
+import styles from "./AiQuerySuggestionList.module.css";
 
 interface AiQuerySuggestionListProps {
   querySuggestions: readonly AiQuerySuggestion[];
