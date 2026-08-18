@@ -1,8 +1,11 @@
-/* AiCommandMenuItem — admin ana menü kartı: ikon solda, başlık yanında,
- * açıklama alt satırda, rozet sağ üst köşede. */
+/* AiCommandMenuItem — birleşik ızgara hücresi (Excel tablosu disiplini):
+ * radius=0, margin=0, ortak tek çizgili kenar (sağ+alt), süt beyazı zemin,
+ * dokununca parlar. İkon solda, başlık yanında, açıklama alt satırda,
+ * rozet sağ üst köşede. */
 
 .menuItem {
   min-width: 0;
+  display: flex; /* buton hücre yüksekliğini tam doldursun */
 }
 
 .menuItemButton {
@@ -14,22 +17,27 @@
   align-items: center;
   align-content: start;
   inline-size: 100%;
+  block-size: 100%;
   min-block-size: 76px;
-  border: 1px solid var(--ai-cc-border);
-  border-radius: 8px;
-  background: var(--ai-cc-surface);
+  margin: 0;
+  border: none;
+  border-inline-end: 1px solid var(--ai-cc-border);
+  border-block-end: 1px solid var(--ai-cc-border);
+  border-radius: 0;
+  /* Süt beyazı (sıcak kırık beyaz; buz mavisi değil). */
+  background: #faf7f0;
   padding: 12px 14px;
   text-align: start;
   cursor: pointer;
   color: inherit;
+  -webkit-tap-highlight-color: transparent;
   opacity: 0;
   translate: 0 8px;
   transition:
     opacity 240ms ease,
     translate 240ms ease,
-    border-color var(--ai-command-card-hover-duration) ease,
-    box-shadow var(--ai-command-card-hover-duration) ease,
-    scale var(--ai-command-card-press-duration) ease;
+    background-color var(--ai-command-card-hover-duration) ease,
+    box-shadow var(--ai-command-card-hover-duration) ease;
 }
 
 /* Reveal: kart açılırken --menu-item-index'e göre stagger ile belirir. */
@@ -40,21 +48,22 @@
   transition-delay:
     calc(var(--ai-command-card-reveal-delay) + var(--menu-item-index, 0) * var(--ai-command-card-item-stagger)),
     calc(var(--ai-command-card-reveal-delay) + var(--menu-item-index, 0) * var(--ai-command-card-item-stagger)),
-    0s, 0s, 0s;
+    0s, 0s;
 }
 
 .menuItemButton:not(:disabled):hover {
-  border-color: var(--ai-cc-accent);
-  box-shadow: 0 2px 8px rgba(16, 24, 40, 0.1);
+  background: #ffffff;
 }
 
+/* Dokununca/basınca PARLAR: saf beyaz + içten accent ışıması. */
 .menuItemButton:not(:disabled):active {
-  scale: 0.98;
+  background: #ffffff;
+  box-shadow: inset 0 0 0 2px var(--ai-cc-accent-soft), inset 0 0 18px rgba(99, 102, 241, 0.18);
 }
 
 .menuItemButton:focus-visible {
   outline: none;
-  box-shadow: var(--ai-cc-focus-ring);
+  box-shadow: inset var(--ai-cc-focus-ring);
 }
 
 .menuItemButton:disabled {
@@ -80,7 +89,7 @@
   overflow-wrap: break-word;
 }
 
-/* Geniş container'da kutular büyür; yazı ve ikon orantılı ölçeklenir. */
+/* Geniş container'da yazı ve ikon orantılı ölçeklenir. */
 @container ai-command-region (min-width: 640px) {
   .menuItemIcon svg {
     inline-size: 22px;
@@ -115,7 +124,7 @@
   }
 }
 
-/* Sağ üst köşede yüzer; kartın grid ölçülerine katılmaz. */
+/* Sağ üst köşede yüzer; hücrenin grid ölçülerine katılmaz. */
 .menuItemBadge {
   position: absolute;
   inset-block-start: 6px;

@@ -1,13 +1,18 @@
-/* AiCommandMenuGrid — 2/3/4 kolonlu responsive komut ızgarası.
- * Container: expandedRegion (ai-command-region). */
+/* AiCommandMenuGrid — 2/3/4 kolonlu, Excel tablosu gibi BİRLEŞİK ızgara.
+ * Container: expandedRegion (ai-command-region).
+ * gap=0; hücre kenarları tek çizgi (hücreler sağ+alt, çerçeve üst+sol);
+ * tüm satırlar en yüksek hücreye göre eşit yükseklikte (asker düzeni). */
 
 .menuGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
+  grid-auto-rows: 1fr;
+  gap: 0;
   margin: 0;
   padding: 0;
   list-style: none;
+  border-block-start: 1px solid var(--ai-cc-border);
+  border-inline-start: 1px solid var(--ai-cc-border);
 }
 
 @container ai-command-region (min-width: 640px) {
