@@ -163,9 +163,29 @@ export function AiCommandCard({
   const hasPendingQuery = queryValue.trim().length > 0;
 
   // Expanded, the orb sits in the composer: with text it submits ("the user
-  // is here to ask AI"); empty, it collapses. Escape always collapses.
+  // is here to ask AI"); empty, it collapses. If the content is scrolled and
+  // the input is out of view, the orb acts as a sticky AI button: first click
+  // brings the prompt input back and focuses it. Escape always collapses.
   const handleTriggerToggle = useCallback(() => {
     if (isCardExpanded) {
+      const region = expandedRegionRef.current;
+      const input = composerInputRef.current;
+      if (region && input) {
+        const regionRect = region.getBoundingClientRect();
+        const inputRect = input.getBoundingClientRect();
+        const isInputScrolledAway =
+          region.scrollTop > 0 && inputRect.bottom < regionRect.top + 8;
+        if (isInputScrolledAway) {
+          input.focus({ preventScroll: true });
+          region.scrollTo({ top: 0, behavior: motion === "reduced" ? "auto" : "smooth" });
+          // Fallback: rAF-throttled contexts can stall smooth scrolling; make
+          // sure the composer is reachable regardless.
+          window.setTimeout(() => {
+            if (region.isConnected && region.scrollTop > 0) region.scrollTop = 0;
+          }, 700);
+          return;
+        }
+      }
       if (hasPendingQuery) {
         void submitAiQueryRef.current(queryValue);
       } else {
@@ -175,7 +195,14 @@ export function AiCommandCard({
       shouldFocusInputOnExpand.current = true;
       requestCardExpansion("trigger-activation");
     }
-  }, [hasPendingQuery, isCardExpanded, queryValue, requestCardCollapse, requestCardExpansion]);
+  }, [
+    hasPendingQuery,
+    isCardExpanded,
+    motion,
+    queryValue,
+    requestCardCollapse,
+    requestCardExpansion,
+  ]);
 
   /* --------------------------------------------------- hidden-content gate */
 
