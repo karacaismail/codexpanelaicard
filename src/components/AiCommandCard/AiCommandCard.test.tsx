@@ -159,7 +159,9 @@ describe("AiCommandCard", () => {
 
     expect(document.querySelectorAll('[data-slot="ai-command-card-shell"]')).toHaveLength(1);
     expect(getShell()).toBe(shell);
-    await waitFor(() => expect(getShell()).toHaveAttribute("data-state", "expanded"));
+    await waitFor(() => expect(getShell()).toHaveAttribute("data-state", "expanded"), {
+      timeout: 3000,
+    });
   });
 
   it("submits the query with the current page context", async () => {
