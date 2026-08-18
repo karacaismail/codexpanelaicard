@@ -85,6 +85,7 @@ export function AiCommandCard({
   const expandedRegionRef = useRef<HTMLDivElement>(null);
   const composerInputRef = useRef<HTMLInputElement>(null);
   const animationTimerRef = useRef<ReturnType<typeof setTimeout>>();
+  const orbLayerInitializedRef = useRef(false);
   // Latest submit closure; lets the trigger handler (declared earlier in the
   // lifecycle section) call it without reordering the whole controller.
   const submitAiQueryRef = useRef<(query: string) => Promise<void>>(async () => {});
@@ -291,43 +292,49 @@ export function AiCommandCard({
         cx = homeRect.left + half;
         cy = homeRect.top + homeRect.height / 2;
       }
-      if (immediate) trigger.style.transition = "none";
-      trigger.style.setProperty("--orb-x", `${(cx - shellRect.left - half).toFixed(1)}px`);
-      trigger.style.setProperty("--orb-y", `${(cy - shellRect.top - half).toFixed(1)}px`);
       if (immediate) {
-        if (typeof requestAnimationFrame === "function") {
-          requestAnimationFrame(() => {
-            trigger.style.transition = "";
-          });
-        } else {
-          trigger.style.transition = "";
-        }
+        // Senkron FLIP: transition kapat → yaz → reflow'la uygula → geri aç.
+        // rAF'a bağımlı değil; yarım kalmış "transition: none" kalamaz.
+        trigger.style.transition = "none";
+        trigger.style.setProperty("--orb-x", `${(cx - shellRect.left - half).toFixed(1)}px`);
+        trigger.style.setProperty("--orb-y", `${(cy - shellRect.top - half).toFixed(1)}px`);
+        void trigger.offsetWidth;
+        trigger.style.transition = "";
+      } else {
+        trigger.style.setProperty("--orb-x", `${(cx - shellRect.left - half).toFixed(1)}px`);
+        trigger.style.setProperty("--orb-y", `${(cy - shellRect.top - half).toFixed(1)}px`);
       }
     };
 
-    // İlk konum boyanmadan önce, geçişsiz otursun.
-    positionOrb(expansionState === "collapsed" || expansionState === "expanded");
-    const onScroll = () => positionOrb(true);
-    const onResize = () => positionOrb(true);
-    region.addEventListener("scroll", onScroll, { passive: true });
-    window.addEventListener("resize", onResize);
+    // Kurallar: (1) İlk mount'ta orb geçişsiz yerine oturur. (2) State
+    // değişimlerinde hedef YUMUŞAK geçişle verilir — süzülme asla iptal olmaz;
+    // yerleşme anında ("expanded"/"collapsed") aynı yumuşak geçiş küçük nihai
+    // düzeltmeyi yapar. (3) Scroll/resize/font düzeltmeleri yalnızca oturmuş
+    // durumda çalışır ve anında snap'lenir; geçiş sürerken tamamen atlanır ki
+    // her karede tetiklenen ResizeObserver animasyonu donduramasın.
+    const isSettled = expansionState === "collapsed" || expansionState === "expanded";
+    positionOrb(!orbLayerInitializedRef.current);
+    orbLayerInitializedRef.current = true;
+    const correct = () => {
+      if (isSettled) positionOrb(true);
+    };
+    region.addEventListener("scroll", correct, { passive: true });
+    window.addEventListener("resize", correct);
     // Çapa kaydıran gecikmeli layout olayları: font yüklenmesi ve shell
-    // boyut değişimleri de anında düzeltilir.
+    // boyut değişimleri de düzeltme tetikler.
     let cancelled = false;
     if (typeof document !== "undefined" && "fonts" in document) {
       document.fonts.ready.then(() => {
-        if (!cancelled) positionOrb(true);
+        if (!cancelled) correct();
       });
     }
     const resizeObserver =
-      typeof ResizeObserver !== "undefined"
-        ? new ResizeObserver(() => positionOrb(true))
-        : null;
+      typeof ResizeObserver !== "undefined" ? new ResizeObserver(correct) : null;
     resizeObserver?.observe(shell);
     return () => {
       cancelled = true;
-      region.removeEventListener("scroll", onScroll);
-      window.removeEventListener("resize", onResize);
+      region.removeEventListener("scroll", correct);
+      window.removeEventListener("resize", correct);
       resizeObserver?.disconnect();
     };
   }, [isCardExpanded, expansionState, breadcrumbs, logoLabel, notificationCount]);
