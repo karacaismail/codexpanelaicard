@@ -18,7 +18,10 @@
   --ai-command-card-expanded-radius: 8px;
   --ai-command-card-expand-duration: 560ms;
   --ai-command-card-collapse-duration: 380ms;
-  --ai-command-card-reveal-delay: 150ms;
+  /* KEMİK KURAL (değişmez): açılışta ÖNCE radius değişir, SONRA kart büyür.
+   * Kapanışta ayna: önce küçülür, sonra kapsüle döner. */
+  --ai-command-card-radius-morph-duration: 160ms;
+  --ai-command-card-reveal-delay: 260ms; /* radius morph (160ms) + 100ms */
   --ai-command-card-item-stagger: 35ms;
   --ai-command-card-hover-duration: 140ms;
   --ai-command-card-press-duration: 90ms;
@@ -91,11 +94,13 @@
   overflow: clip;
   display: flex;
   flex-direction: column;
+  /* Kapanış: önce boyut küçülür, radius kapsüle EN SONDA döner. */
   transition:
     inline-size var(--ai-command-card-collapse-duration) var(--ai-command-card-easing),
     block-size var(--ai-command-card-collapse-duration) var(--ai-command-card-easing),
-    border-radius var(--ai-command-card-collapse-duration) var(--ai-command-card-easing),
-    box-shadow var(--ai-command-card-collapse-duration) var(--ai-command-card-easing);
+    box-shadow var(--ai-command-card-collapse-duration) var(--ai-command-card-easing),
+    border-radius var(--ai-command-card-radius-morph-duration) var(--ai-command-card-easing)
+      var(--ai-command-card-collapse-duration);
 }
 
 .shell[data-state="expanding"],
@@ -107,7 +112,15 @@
   );
   border-radius: var(--ai-command-card-expanded-radius);
   box-shadow: 0 16px 40px rgba(16, 24, 40, 0.16);
-  transition-duration: var(--ai-command-card-expand-duration);
+  /* Açılış: ÖNCE radius (gecikmesiz, kısa), büyüme radius bitince başlar. */
+  transition:
+    border-radius var(--ai-command-card-radius-morph-duration) var(--ai-command-card-easing),
+    inline-size var(--ai-command-card-expand-duration) var(--ai-command-card-easing)
+      var(--ai-command-card-radius-morph-duration),
+    block-size var(--ai-command-card-expand-duration) var(--ai-command-card-easing)
+      var(--ai-command-card-radius-morph-duration),
+    box-shadow var(--ai-command-card-expand-duration) var(--ai-command-card-easing)
+      var(--ai-command-card-radius-morph-duration);
 }
 
 /* will-change yalnızca geometri gerçekten animasyondayken */

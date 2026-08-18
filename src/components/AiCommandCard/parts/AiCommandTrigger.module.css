@@ -19,6 +19,8 @@
 [data-slot="ai-command-card-shell"][data-state="expanded"] .aiTrigger {
   translate: var(--orb-travel-x, 0px) var(--orb-travel-y, 0px);
   transition-duration: var(--ai-command-card-expand-duration);
+  /* Kemik kural: göç, radius morph'u bittikten sonra (büyümeyle birlikte). */
+  transition-delay: var(--ai-command-card-radius-morph-duration);
 }
 
 /*

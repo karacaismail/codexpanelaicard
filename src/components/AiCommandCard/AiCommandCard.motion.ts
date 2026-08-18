@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 
-/** Motion durations, mirrored in AiCommandCard.tokens.css. Kept here so the
- * controller can schedule its animation-complete fallback timers. */
-export const EXPAND_DURATION_MS = 560;
-export const COLLAPSE_DURATION_MS = 380;
+/** Motion durations, mirrored in AiCommandCard.module.css tokens. Kept here
+ * so the controller can schedule its animation-complete fallback timers.
+ * KEMİK KURAL: açılışta önce radius morph'u (RADIUS_MORPH_MS), sonra büyüme —
+ * toplam süreler bu yüzden iki fazın toplamıdır. */
+export const RADIUS_MORPH_MS = 160;
+export const EXPAND_DURATION_MS = 560 + RADIUS_MORPH_MS;
+export const COLLAPSE_DURATION_MS = 380 + RADIUS_MORPH_MS;
 export const REVEAL_DELAY_MS = 150;
 export const ITEM_STAGGER_MS = 35;
 
