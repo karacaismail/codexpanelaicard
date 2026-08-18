@@ -14,8 +14,11 @@
   --ai-command-card-expanded-height: 520px;
   --ai-command-card-mobile-gutter: 8px;
   /* Radius istisnası: kapalı shell, composer ile aynı search-bar kapsülü
-   * (uçlar %100 yuvarlak); açıkken 8px kuralına döner. */
-  --ai-command-card-collapsed-radius: 999px;
+   * (uçlar %100 yuvarlak); açıkken 8px kuralına döner.
+   * DİKKAT: 999px DEĞİL, gerçek kapsül değeri (yükseklik/2). 999'dan
+   * interpolasyon, 32px üstü kısıldığı için tıklamadan sonra "ölü bekleme"
+   * yaratıyordu; gerçek değerden başlayınca radius ANINDA değişmeye başlar. */
+  --ai-command-card-collapsed-radius: calc(var(--ai-command-card-collapsed-height) / 2);
   --ai-command-card-expanded-radius: 8px;
   /* Faz süreleri: radius 0,7sn + büyüme/küçülme 0,7sn = toplam 1,4sn. */
   --ai-command-card-expand-duration: 700ms;

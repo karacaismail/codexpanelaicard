@@ -24,8 +24,8 @@ export function AiMorphingStar({ size = 24 }: { size?: number }) {
     <svg viewBox="0 0 24 24" width={size} height={size}>
       <path
         d={STAR_5}
-        fill="hsla(325, 85%, 75%, 0.45)"
-        stroke="hsl(52, 95%, 82%)"
+        fill="hsla(325, 100%, 72%, 0.5)"
+        stroke="hsl(52, 100%, 80%)"
         strokeWidth={2.7}
         strokeLinejoin="round"
         strokeLinecap="round"
@@ -40,19 +40,19 @@ export function AiMorphingStar({ size = 24 }: { size?: number }) {
           calcMode="spline"
           keySplines={`${EASE};${EASE};${EASE};${EASE};${EASE};${EASE}`}
         />
-        {/* Çizgi rengi: 24sn gökkuşağı — doygunluk %95, açıklık %82 sabit. */}
+        {/* Çizgi rengi: 24sn gökkuşağı — doygunluk %100, açıklık %80 sabit. */}
         <animate
           attributeName="stroke"
           dur="24s"
           repeatCount="indefinite"
-          values="hsl(52,95%,82%);hsl(112,95%,82%);hsl(172,95%,82%);hsl(232,95%,82%);hsl(292,95%,82%);hsl(352,95%,82%);hsl(52,95%,82%)"
+          values="hsl(52,100%,80%);hsl(112,100%,80%);hsl(172,100%,80%);hsl(232,100%,80%);hsl(292,100%,80%);hsl(352,100%,80%);hsl(52,100%,80%)"
         />
-        {/* İç dolgu: 24sn gökkuşağı — doygunluk %85, açıklık %75, alfa 0.45. */}
+        {/* İç dolgu: 24sn gökkuşağı — doygunluk %100, açıklık %72, alfa 0.5. */}
         <animate
           attributeName="fill"
           dur="24s"
           repeatCount="indefinite"
-          values="hsla(325,85%,75%,0.45);hsla(25,85%,75%,0.45);hsla(85,85%,75%,0.45);hsla(145,85%,75%,0.45);hsla(205,85%,75%,0.45);hsla(265,85%,75%,0.45);hsla(325,85%,75%,0.45)"
+          values="hsla(325,100%,72%,0.5);hsla(25,100%,72%,0.5);hsla(85,100%,72%,0.5);hsla(145,100%,72%,0.5);hsla(205,100%,72%,0.5);hsla(265,100%,72%,0.5);hsla(325,100%,72%,0.5)"
         />
       </path>
     </svg>

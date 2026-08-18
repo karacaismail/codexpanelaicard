@@ -50,22 +50,46 @@
     inset 0 -1px 1px rgba(255, 255, 255, 0.4),
     /* butonun zemine oturma gölgesi */
     0 2px 3px rgba(30, 20, 90, 0.3);
-  /* Gövde ("yıldızın dışı") gökkuşağı: hue-rotate filtresi renkleri
-   * çamurlaştırdığı için gerçek HSL duraklarıyla döner — doygunluk %62,
-   * açıklık %68 sabit; 24 sn'de tam tur. */
+  /* Gövde ("yıldızın dışı") gökkuşağı: gerçek HSL durakları, doygunluk %95
+   * (%100'e yakın); 24 sn'de tam tur. Kararsız gezegen yalpası + kendi
+   * ekseninde dönüş orbWobble ile. */
   animation:
     aiHeartbeat 5s ease-in-out infinite,
-    orbBodyRainbow 24s linear infinite;
+    orbBodyRainbow 24s linear infinite,
+    orbWobble 18s ease-in-out infinite;
 }
 
 @keyframes orbBodyRainbow {
-  0%   { background-color: hsl(244, 62%, 68%); }
-  16.7% { background-color: hsl(304, 62%, 68%); }
-  33.3% { background-color: hsl(4, 62%, 68%); }
-  50%  { background-color: hsl(64, 62%, 68%); }
-  66.7% { background-color: hsl(124, 62%, 68%); }
-  83.3% { background-color: hsl(184, 62%, 68%); }
-  100% { background-color: hsl(244, 62%, 68%); }
+  0%   { background-color: hsl(244, 95%, 66%); }
+  16.7% { background-color: hsl(304, 95%, 66%); }
+  33.3% { background-color: hsl(4, 95%, 66%); }
+  50%  { background-color: hsl(64, 95%, 66%); }
+  66.7% { background-color: hsl(124, 95%, 66%); }
+  83.3% { background-color: hsl(184, 95%, 66%); }
+  100% { background-color: hsl(244, 95%, 66%); }
+}
+
+/*
+ * Kararsız gezegen: kendi ekseninde tam tur dönerken merkezden düzensiz
+ * yüzdelerle sapar (%10 sağa, %15 sola, %10 yukarı, %15 aşağı, %20...) —
+ * güneşle arasında mesafe yok, eksen etrafında yalpalı dönüş.
+ */
+@keyframes orbWobble {
+  0%   { translate: 0 0; rotate: 0deg; }
+  9%   { translate: 10% -6%; rotate: 34deg; }
+  19%  { translate: -15% 4%; rotate: 70deg; }
+  30%  { translate: 6% 12%; rotate: 108deg; }
+  41%  { translate: -8% -15%; rotate: 148deg; }
+  53%  { translate: 15% 8%; rotate: 191deg; }
+  64%  { translate: -10% -4%; rotate: 230deg; }
+  76%  { translate: 4% 15%; rotate: 274deg; }
+  88%  { translate: -6% -10%; rotate: 317deg; }
+  100% { translate: 0 0; rotate: 360deg; }
+}
+
+/* Uydular gezegeni GECİKEREK takip eder: aynı yalpa, 0.6 sn faz gerisinde. */
+.aiTrigger [data-slot="ai-particle-field"] {
+  animation: orbWobble 18s ease-in-out 0.6s infinite;
 }
 
 .aiOrbGlow {
