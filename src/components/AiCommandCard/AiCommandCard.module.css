@@ -1,0 +1,769 @@
+/*
+ * All geometry and motion values live in component-level custom properties so
+ * Storybook controls and future themes can retune them without touching JSX.
+ */
+.host {
+  --ai-command-card-collapsed-height: 52px;
+  --ai-command-card-collapsed-max-width: 700px;
+  --ai-command-card-expanded-max-width: 1050px;
+  --ai-command-card-expanded-height: 520px;
+  --ai-command-card-mobile-gutter: 8px;
+  --ai-command-card-collapsed-radius: 16px;
+  --ai-command-card-expanded-radius: 24px;
+  --ai-command-card-expand-duration: 560ms;
+  --ai-command-card-collapse-duration: 380ms;
+  --ai-command-card-reveal-delay: 150ms;
+  --ai-command-card-item-stagger: 35ms;
+  --ai-command-card-hover-duration: 140ms;
+  --ai-command-card-press-duration: 90ms;
+  --ai-command-card-easing: cubic-bezier(0.22, 1, 0.36, 1);
+
+  --ai-cc-surface: #ffffff;
+  --ai-cc-surface-muted: #f4f5f7;
+  --ai-cc-border: #d9dce1;
+  --ai-cc-text: #1c1e21;
+  --ai-cc-text-muted: #5b6371;
+  --ai-cc-accent: #4f46e5;
+  --ai-cc-accent-soft: #eef2ff;
+  --ai-cc-focus-ring: 0 0 0 3px rgba(79, 70, 229, 0.35);
+
+  box-sizing: border-box;
+  inline-size: 100%;
+  padding-inline: var(--ai-command-card-mobile-gutter);
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--ai-cc-text);
+}
+
+.host *,
+.host *::before,
+.host *::after {
+  box-sizing: border-box;
+}
+
+/* ------------------------------------------------------------------ shell */
+
+/*
+ * The one persistent surface. It is never unmounted, keyed, cloned or
+ * replaced; collapsed/expanded are pure CSS states of this same DOM node.
+ * Real inline-size/block-size are transitioned (no transform: scale), so the
+ * card physically grows from its own borders with crisp text throughout.
+ */
+.shell {
+  container: ai-command-shell / inline-size;
+  position: relative;
+  margin-inline: auto;
+  inline-size: min(100%, var(--ai-command-card-collapsed-max-width));
+  block-size: var(--ai-command-card-collapsed-height);
+  border: 1px solid var(--ai-cc-border);
+  border-radius: var(--ai-command-card-collapsed-radius);
+  background: var(--ai-cc-surface);
+  box-shadow: 0 1px 2px rgba(16, 24, 40, 0.07);
+  overflow: clip;
+  display: flex;
+  flex-direction: column;
+  transition:
+    inline-size var(--ai-command-card-collapse-duration) var(--ai-command-card-easing),
+    block-size var(--ai-command-card-collapse-duration) var(--ai-command-card-easing),
+    border-radius var(--ai-command-card-collapse-duration) var(--ai-command-card-easing),
+    box-shadow var(--ai-command-card-collapse-duration) var(--ai-command-card-easing);
+}
+
+.shell[data-state="expanding"],
+.shell[data-state="expanded"] {
+  inline-size: min(100%, var(--ai-command-card-expanded-max-width));
+  block-size: min(
+    var(--ai-command-card-expanded-height),
+    calc(100dvh - 2 * var(--ai-command-card-mobile-gutter))
+  );
+  border-radius: var(--ai-command-card-expanded-radius);
+  box-shadow: 0 16px 40px rgba(16, 24, 40, 0.16);
+  transition-duration: var(--ai-command-card-expand-duration);
+}
+
+/* will-change only while geometry is actually animating */
+.shell[data-state="expanding"],
+.shell[data-state="collapsing"] {
+  will-change: inline-size, block-size;
+}
+
+/* ----------------------------------------------------------------- header */
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-block-size: calc(var(--ai-command-card-collapsed-height) - 2px);
+  padding-inline: 10px;
+  flex: 0 0 auto;
+}
+
+.logoAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 32px;
+  block-size: 32px;
+  border: none;
+  border-radius: 10px;
+  background: var(--ai-cc-accent-soft);
+  color: var(--ai-cc-accent);
+  font-weight: 700;
+  cursor: pointer;
+  flex: 0 0 auto;
+  transition: opacity var(--ai-command-card-hover-duration) ease;
+}
+
+.logoStatic {
+  cursor: default;
+}
+
+.logoAction:hover {
+  opacity: 0.85;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.breadcrumbList {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.breadcrumbAncestor {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--ai-cc-text-muted);
+  font-size: 13px;
+  white-space: nowrap;
+  /* Collapsed: take no layout space so the current page hugs the logo. */
+  max-inline-size: 0;
+  overflow: clip;
+  opacity: 0;
+  translate: -4px 0;
+  transition:
+    opacity var(--ai-command-card-hover-duration) ease,
+    translate var(--ai-command-card-hover-duration) ease,
+    max-inline-size var(--ai-command-card-collapse-duration) var(--ai-command-card-easing);
+  transition-delay: var(--ai-command-card-reveal-delay);
+}
+
+/* Ancestor levels reveal only when the shell is wide enough to keep the
+ * current page visible; on narrow screens the current page keeps priority. */
+@container ai-command-shell (min-width: 560px) {
+  .shell[data-state="expanded"] .breadcrumbAncestor,
+  .shell[data-state="expanding"] .breadcrumbAncestor {
+    max-inline-size: 320px;
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+.breadcrumbSeparator {
+  color: var(--ai-cc-border);
+}
+
+.currentPage {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.headerActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+/* ---------------------------------------------------------- icon actions */
+
+.iconAction {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: 44px;
+  block-size: 44px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ai-cc-text-muted);
+  cursor: pointer;
+  transition:
+    background-color var(--ai-command-card-hover-duration) ease,
+    scale var(--ai-command-card-press-duration) ease,
+    border-color var(--ai-command-card-hover-duration) ease;
+}
+
+.iconAction:hover {
+  background: var(--ai-cc-surface-muted);
+}
+
+.iconAction:active {
+  scale: 0.97;
+}
+
+.iconAction:focus-visible,
+.logoAction:focus-visible {
+  outline: none;
+  box-shadow: var(--ai-cc-focus-ring);
+}
+
+.notificationBadge {
+  position: absolute;
+  inset-block-start: 4px;
+  inset-inline-end: 4px;
+  min-inline-size: 16px;
+  block-size: 16px;
+  padding-inline: 4px;
+  border-radius: 999px;
+  background: #dc2626;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
+}
+
+.profileAction {
+  background: var(--ai-cc-surface-muted);
+  color: var(--ai-cc-text);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+/* ------------------------------------------------------------ AI trigger */
+
+.aiTrigger {
+  background: transparent;
+  border-color: transparent;
+}
+
+.aiTrigger:hover {
+  background: transparent;
+}
+
+/*
+ * The AI orb: a gradient sphere with a heartbeat rhythm — two quick beats,
+ * then rest — on a 5s infinite loop. Animation lives on inner elements so the
+ * 44px hit target never changes and neighbours are never pushed.
+ */
+.aiOrb {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  inline-size: 32px;
+  block-size: 32px;
+  border-radius: 999px;
+  color: #fff;
+  /*
+   * Liquid-glass finish: a translucent gradient with INSET highlights instead
+   * of a spherical radial hotspot — the shine reads as embedded in the glass,
+   * with only a hint of depth (deliberately restrained 3D).
+   */
+  background: linear-gradient(
+    160deg,
+    rgba(129, 108, 245, 0.92) 0%,
+    rgba(99, 102, 241, 0.82) 52%,
+    rgba(196, 74, 230, 0.78) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.55),
+    inset 0 8px 12px -6px rgba(255, 255, 255, 0.35),
+    inset 0 -5px 10px -4px rgba(59, 33, 128, 0.5),
+    0 1px 3px rgba(99, 102, 241, 0.35);
+  backdrop-filter: blur(6px);
+  animation: aiHeartbeat 5s ease-in-out infinite;
+}
+
+.aiOrbGlow {
+  position: absolute;
+  inset: 2px;
+  border-radius: 999px;
+  background: radial-gradient(closest-side, rgba(139, 92, 246, 0.55), rgba(139, 92, 246, 0));
+  filter: blur(4px);
+  animation: aiHeartbeatGlow 5s ease-in-out infinite;
+}
+
+.shell[data-query-state="typing"] .aiOrb,
+.shell[data-query-state="submitting"] .aiOrb,
+.shell[data-query-state="typing"] .aiOrbGlow,
+.shell[data-query-state="submitting"] .aiOrbGlow {
+  animation-play-state: paused;
+}
+
+/* Heartbeat: lub (8%) — dub (24%) — long rest until the next 5s cycle. */
+@keyframes aiHeartbeat {
+  0% { scale: 1; }
+  8% { scale: 1.14; }
+  16% { scale: 1; }
+  24% { scale: 1.1; }
+  36% { scale: 1; }
+  100% { scale: 1; }
+}
+
+@keyframes aiHeartbeatGlow {
+  0% { opacity: 0.35; scale: 1; }
+  8% { opacity: 1; scale: 1.5; }
+  16% { opacity: 0.45; scale: 1.1; }
+  24% { opacity: 0.9; scale: 1.4; }
+  36% { opacity: 0.35; scale: 1; }
+  100% { opacity: 0.35; scale: 1; }
+}
+
+.particleField {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.particle {
+  position: absolute;
+  inline-size: 3px;
+  block-size: 3px;
+  border-radius: 999px;
+  background: var(--ai-cc-accent);
+  opacity: 0.5;
+  animation: particleDrift 3.6s ease-in-out infinite;
+}
+
+@keyframes particleDrift {
+  0%, 100% { translate: 0 0; opacity: 0.35; }
+  50% { translate: var(--particle-dx, 2px) var(--particle-dy, -3px); opacity: 0.8; }
+}
+
+/* -------------------------------------------------- expanded content body */
+
+/*
+ * Expanded content stays mounted inside the shell at all times so the shell
+ * can reveal it mid-animation. Collapsed, it is inert + aria-hidden (set in
+ * JSX) and visually hidden here; it never portals or becomes a sibling panel.
+ */
+.expandedRegion {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 4px 14px 14px;
+  flex: 1 1 auto;
+  min-block-size: 0;
+  overflow-y: auto;
+  overflow-x: clip;
+  opacity: 0;
+  visibility: hidden;
+  translate: 0 -6px;
+  transition:
+    opacity var(--ai-command-card-collapse-duration) ease,
+    translate var(--ai-command-card-collapse-duration) ease,
+    visibility 0s linear var(--ai-command-card-collapse-duration);
+}
+
+.shell[data-state="expanding"] .expandedRegion,
+.shell[data-state="expanded"] .expandedRegion {
+  opacity: 1;
+  visibility: visible;
+  translate: 0 0;
+  transition:
+    opacity var(--ai-command-card-expand-duration) ease var(--ai-command-card-reveal-delay),
+    translate var(--ai-command-card-expand-duration) ease var(--ai-command-card-reveal-delay),
+    visibility 0s;
+}
+
+/* Header pieces that only exist in the expanded layout */
+.expandedOnlyAction {
+  opacity: 0;
+  translate: 4px 0;
+  transition:
+    opacity var(--ai-command-card-hover-duration) ease,
+    translate var(--ai-command-card-hover-duration) ease;
+  transition-delay: var(--ai-command-card-reveal-delay);
+}
+
+.shell[data-state="expanding"] .expandedOnlyAction,
+.shell[data-state="expanded"] .expandedOnlyAction {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* --------------------------------------------------------------- composer */
+
+.composer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--ai-cc-border);
+  border-radius: 14px;
+  padding: 6px 8px;
+  background: var(--ai-cc-surface);
+  transition: border-color var(--ai-command-card-hover-duration) ease,
+    box-shadow var(--ai-command-card-hover-duration) ease;
+}
+
+.composer:focus-within {
+  border-color: var(--ai-cc-accent);
+  box-shadow: var(--ai-cc-focus-ring);
+}
+
+.composerInput {
+  flex: 1 1 auto;
+  min-width: 0;
+  border: none;
+  outline: none;
+  font-size: 14px;
+  background: transparent;
+  color: inherit;
+  block-size: 32px;
+}
+
+/* Reserved landing pad for the orb inside the composer. */
+.orbSlot {
+  flex: 0 0 auto;
+  inline-size: 44px;
+  block-size: 40px;
+}
+
+/* Static anchor in the header; keeps its box while the orb travels. */
+.triggerHome {
+  position: relative;
+  display: inline-flex;
+  inline-size: 44px;
+  block-size: 44px;
+}
+
+/*
+ * Orb migration: when the card opens, the SAME trigger button glides from the
+ * header into the composer's submit slot (the user is here to ask AI). The
+ * travel vector is measured by the controller and written to --orb-travel-*.
+ */
+.aiTrigger {
+  translate: 0 0;
+  transition: translate var(--ai-command-card-collapse-duration) var(--ai-command-card-easing);
+  z-index: 2;
+}
+
+.shell[data-state="expanding"] .aiTrigger,
+.shell[data-state="expanded"] .aiTrigger {
+  translate: var(--orb-travel-x, 0px) var(--orb-travel-y, 0px);
+  transition-duration: var(--ai-command-card-expand-duration);
+}
+
+.status {
+  margin: 0;
+  min-block-size: 18px;
+  font-size: 12px;
+  color: var(--ai-cc-text-muted);
+}
+
+/* ---------------------------------------------------------- AI response */
+
+.responseArea {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  border: 1px solid var(--ai-cc-border);
+  border-radius: 14px;
+  background: var(--ai-cc-accent-soft);
+  padding: 12px 14px;
+}
+
+.responseIcon {
+  display: inline-grid;
+  place-items: center;
+  inline-size: 22px;
+  block-size: 22px;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  color: #fff;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 45%, #d946ef 100%);
+}
+
+.responseRich {
+  min-width: 0;
+  flex: 1 1 auto;
+  animation: richReveal 360ms ease;
+}
+
+@keyframes richReveal {
+  from { opacity: 0; translate: 0 6px; }
+  to { opacity: 1; translate: 0 0; }
+}
+
+.responseText {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ai-cc-text);
+  overflow-wrap: anywhere;
+}
+
+.responseCaret {
+  display: inline-block;
+  inline-size: 7px;
+  block-size: 13px;
+  margin-inline-start: 2px;
+  vertical-align: text-bottom;
+  background: var(--ai-cc-accent);
+  animation: caretBlink 0.8s steps(2, jump-none) infinite;
+}
+
+@keyframes caretBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.responseThinking {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  block-size: 22px;
+}
+
+.thinkingDot {
+  inline-size: 6px;
+  block-size: 6px;
+  border-radius: 999px;
+  background: var(--ai-cc-accent);
+  animation: thinkingPulse 1.2s ease-in-out infinite;
+}
+
+.thinkingDot:nth-child(2) { animation-delay: 0.15s; }
+.thinkingDot:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes thinkingPulse {
+  0%, 100% { opacity: 0.3; translate: 0 0; }
+  50% { opacity: 1; translate: 0 -2px; }
+}
+
+.statusError {
+  color: #b91c1c;
+}
+
+/* ------------------------------------------------------------ suggestions */
+
+.suggestionList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.suggestionPill {
+  border: 1px solid var(--ai-cc-border);
+  border-radius: 999px;
+  background: var(--ai-cc-surface);
+  color: var(--ai-cc-text-muted);
+  font-size: 12px;
+  padding: 8px 12px;
+  min-block-size: 34px;
+  cursor: pointer;
+  transition:
+    background-color var(--ai-command-card-hover-duration) ease,
+    border-color var(--ai-command-card-hover-duration) ease,
+    scale var(--ai-command-card-press-duration) ease;
+}
+
+/*
+ * Beckon: a soft glow wave sweeps across the pills (staggered via
+ * --pill-index) to invite a click. Pauses on hover/focus so it never fights
+ * direct interaction; removed entirely under reduced motion.
+ */
+.shell[data-state="expanded"] .suggestionPill {
+  animation: pillBeckon 6s ease-in-out infinite;
+  animation-delay: calc(var(--pill-index, 0) * 600ms);
+}
+
+.suggestionPill:hover,
+.suggestionPill:focus-visible {
+  animation-play-state: paused;
+}
+
+@keyframes pillBeckon {
+  0%, 24%, 100% {
+    border-color: var(--ai-cc-border);
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
+    translate: 0 0;
+  }
+  8% {
+    border-color: var(--ai-cc-accent);
+    box-shadow: 0 2px 12px 0 rgba(139, 92, 246, 0.35);
+    translate: 0 -2px;
+  }
+  16% {
+    border-color: var(--ai-cc-border);
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
+    translate: 0 0;
+  }
+}
+
+.suggestionPill:hover {
+  background: var(--ai-cc-accent-soft);
+  border-color: var(--ai-cc-accent);
+}
+
+.suggestionPill:active {
+  scale: 0.97;
+}
+
+.suggestionPill:focus-visible {
+  outline: none;
+  box-shadow: var(--ai-cc-focus-ring);
+}
+
+/* -------------------------------------------------------------- menu grid */
+
+.menuGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@container (min-width: 640px) {
+  .menuGrid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@container (min-width: 900px) {
+  .menuGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.expandedRegion {
+  container-type: inline-size;
+}
+
+.menuItem {
+  min-width: 0;
+}
+
+.menuItemButton {
+  position: relative;
+  /* Icon sits left of the title; the description spans the full row below. */
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 8px;
+  row-gap: 4px;
+  align-items: center;
+  align-content: start;
+  inline-size: 100%;
+  min-block-size: 64px;
+  border: 1px solid var(--ai-cc-border);
+  border-radius: 12px;
+  background: var(--ai-cc-surface);
+  padding: 10px;
+  text-align: start;
+  cursor: pointer;
+  color: inherit;
+  opacity: 0;
+  translate: 0 8px;
+  transition:
+    opacity 240ms ease,
+    translate 240ms ease,
+    border-color var(--ai-command-card-hover-duration) ease,
+    box-shadow var(--ai-command-card-hover-duration) ease,
+    scale var(--ai-command-card-press-duration) ease;
+}
+
+.shell[data-state="expanding"] .menuItemButton,
+.shell[data-state="expanded"] .menuItemButton {
+  opacity: 1;
+  translate: 0 0;
+  transition-delay:
+    calc(var(--ai-command-card-reveal-delay) + var(--menu-item-index, 0) * var(--ai-command-card-item-stagger)),
+    calc(var(--ai-command-card-reveal-delay) + var(--menu-item-index, 0) * var(--ai-command-card-item-stagger)),
+    0s, 0s, 0s;
+}
+
+.menuItemButton:not(:disabled):hover {
+  border-color: var(--ai-cc-accent);
+  box-shadow: 0 2px 8px rgba(16, 24, 40, 0.1);
+}
+
+.menuItemButton:not(:disabled):active {
+  scale: 0.98;
+}
+
+.menuItemButton:focus-visible {
+  outline: none;
+  box-shadow: var(--ai-cc-focus-ring);
+}
+
+.menuItemButton:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.menuItemIcon {
+  display: inline-grid;
+  place-items: center;
+  color: var(--ai-cc-accent);
+}
+
+.menuItemLabel {
+  font-size: 13px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+/* Icon-less items: let the title take the whole first row. */
+.menuItemButton:not(:has(.menuItemIcon)) .menuItemLabel {
+  grid-column: 1 / -1;
+}
+
+.menuItemDescription {
+  grid-column: 1 / -1;
+  font-size: 12px;
+  color: var(--ai-cc-text-muted);
+  overflow-wrap: anywhere;
+}
+
+/* Floats at the card's top-end corner; absolute so it never adds height
+ * or width to the card's grid layout. */
+.menuItemBadge {
+  position: absolute;
+  inset-block-start: 6px;
+  inset-inline-end: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ai-cc-accent);
+  background: var(--ai-cc-accent-soft);
+  border-radius: 999px;
+  padding: 2px 8px;
+  pointer-events: none;
+}
+
+/* --------------------------------------------------------- reduced motion */
+
+.host[data-motion="reduced"] .shell,
+.host[data-motion="reduced"] .shell * {
+  transition-duration: 0.01ms !important;
+  transition-delay: 0s !important;
+  animation: none !important;
+}
+
+@media (min-width: 768px) {
+  .host {
+    padding-inline: 24px;
+  }
+}

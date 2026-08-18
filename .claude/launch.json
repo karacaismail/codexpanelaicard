@@ -1,0 +1,17 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "storybook",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["storybook", "dev", "-p", "6006", "--no-open"],
+      "port": 6006
+    },
+    {
+      "name": "demo",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["vite", "--port", "5174", "--strictPort"],
+      "port": 5174
+    }
+  ]
+}
