@@ -30,6 +30,14 @@ Deploy: `main`'e push → `.github/workflows/deploy.yml` test + build alıp
 `dist/`i GitHub Pages'e yayınlar (repo ayarlarında Pages source olarak
 "GitHub Actions" seçili olmalı).
 
+- Demo (device switcher): https://karacaismail.github.io/codexpanelaicard/
+- Storybook (bileşen kataloğu): https://karacaismail.github.io/codexpanelaicard/storybook/
+
+**Çalışma kuralı:** her bileşen güncellemesinden sonra commit + `git push` —
+push, GitHub Pages'i (demo + Storybook) otomatik günceller. Her mikro bileşenin
+kendi `*.stories.tsx` dosyası `src/components/AiCommandCard/parts/` altındadır;
+bileşen bazlı güncellemelerde yalnızca ilgili part + story dosyasına dokunun.
+
 Demo sayfasındaki 12 komut kartı admin ana menüsü gibi davranır: karta
 tıklamak o sayfayı modal olarak açar (6 child bölüm kartı + grafikler + veri
 tablosu). Bu modal demo host sayfasına aittir; bileşenin tek-yüzey invariant'ı
