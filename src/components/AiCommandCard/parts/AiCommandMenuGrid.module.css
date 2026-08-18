@@ -1,7 +1,12 @@
-/* AiCommandMenuGrid — 2/3/4 kolonlu, Excel tablosu gibi BİRLEŞİK ızgara.
- * Container: expandedRegion (ai-command-region).
- * gap=0; hücre kenarları tek çizgi (hücreler sağ+alt, çerçeve üst+sol);
- * tüm satırlar en yüksek hücreye göre eşit yükseklikte (asker düzeni). */
+/* AiCommandMenuGrid — Excel gibi birleşik ızgara; cihaz sınıfına göre
+ * satır/adet disiplini (kullanıcı spesifikasyonu):
+ *   desktop            : 2 satır × 5 sütun, en fazla 10 adet
+ *   tablet yatay       : 2 satır × 5 sütun, en fazla 10 adet
+ *   tablet dikey       : 2 satır × 4 sütun, en fazla 8 adet
+ *   telefon yatay      : 2 satır × 3 sütun, en fazla 6 adet
+ *   telefon dikey      : 5 satır × 2 sütun, en fazla 10 adet (condensed font)
+ *   tek sütun (<240px) : en fazla 5 satır
+ * Fazla item'lar CSS ile gizlenir; veri modeli değişmez. */
 
 .menuGrid {
   display: grid;
@@ -15,9 +20,47 @@
   border-inline-start: 1px solid var(--ai-cc-border);
 }
 
-/* Üst sınır: TÜM cihazlarda en fazla 3 kolon (4 kolon kademesi yok). */
-@container ai-command-region (min-width: 640px) {
+/* Telefon dikey (varsayılan): 2 sütun, en fazla 10 adet (5 satır). */
+.menuGrid > :nth-child(n + 11) {
+  display: none;
+}
+
+/* Tek sütun güvenliği (çok dar): en fazla 5 satır. */
+@media (max-width: 239px) {
+  .menuGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .menuGrid > :nth-child(n + 6) {
+    display: none;
+  }
+}
+
+/* Telefon yatay: 3 sütun × 2 satır, en fazla 6 adet. */
+@media (orientation: landscape) and (max-width: 767px) {
   .menuGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .menuGrid > :nth-child(n + 7) {
+    display: none;
+  }
+}
+
+/* Tablet dikey: 4 sütun × 2 satır, en fazla 8 adet. */
+@media (orientation: portrait) and (min-width: 768px) {
+  .menuGrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .menuGrid > :nth-child(n + 9) {
+    display: none;
+  }
+}
+
+/* Tablet yatay + desktop: 5 sütun × 2 satır, en fazla 10 adet. */
+@media (orientation: landscape) and (min-width: 768px) {
+  .menuGrid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+  .menuGrid > :nth-child(n + 11) {
+    display: none;
   }
 }

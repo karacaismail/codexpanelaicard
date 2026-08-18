@@ -24,8 +24,9 @@
   border-inline-end: 1px solid var(--ai-cc-border);
   border-block-end: 1px solid var(--ai-cc-border);
   border-radius: 0;
-  /* Süt beyazı (sıcak kırık beyaz; buz mavisi değil). */
-  background: #faf7f0;
+  /* Kırık beyaz — tereyağı(10) ile saf beyaz(1) skalasında 6:
+   * beyaz olduğu hemen anlaşılmayacak kadar kırık, ama tereyağı değil. */
+  background: #fcfbf7;
   padding: 12px 14px;
   text-align: start;
   cursor: pointer;
@@ -87,6 +88,22 @@
   font-size: 14px;
   font-weight: 600;
   overflow-wrap: break-word;
+}
+
+/* Telefon dikey: 2 sütuna sığması için condensed tipografi (320px dahil). */
+@media (orientation: portrait) and (max-width: 480px) {
+  .menuItemLabel {
+    font-size: 13px;
+    letter-spacing: -0.015em;
+  }
+  .menuItemDescription {
+    font-size: 11.5px;
+    letter-spacing: -0.01em;
+  }
+  .menuItemButton {
+    padding: 10px;
+    column-gap: 8px;
+  }
 }
 
 /* Geniş container'da yazı ve ikon orantılı ölçeklenir. */
