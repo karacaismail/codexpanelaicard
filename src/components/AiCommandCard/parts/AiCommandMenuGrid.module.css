@@ -15,14 +15,9 @@
   border-inline-start: 1px solid var(--ai-cc-border);
 }
 
+/* Üst sınır: TÜM cihazlarda en fazla 3 kolon (4 kolon kademesi yok). */
 @container ai-command-region (min-width: 640px) {
   .menuGrid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
-@container ai-command-region (min-width: 900px) {
-  .menuGrid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }
