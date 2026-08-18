@@ -4,6 +4,7 @@ import {
   useCallback,
   useEffect,
   useId,
+  useLayoutEffect,
   useMemo,
   useReducer,
   useRef,
@@ -256,36 +257,80 @@ export function AiCommandCard({
     };
   }, [isCardExpanded, expansionState, aiResponse, queryState]);
 
-  // Orb migration (FLIP): measure the vector from the orb's header anchor to
-  // the composer slot and let CSS translate it there. Re-measured when the
-  // animation settles ("expanded") and on resize, so late layout shifts are
-  // smoothly corrected by the same transition.
-  useEffect(() => {
-    const measureOrbTravel = () => {
-      const trigger = triggerRef.current;
-      const home = triggerHomeRef.current;
-      const slot = orbSlotRef.current;
-      if (!trigger || !home || !slot) return;
-      if (!isCardExpanded) {
-        trigger.style.removeProperty("--orb-travel-x");
-        trigger.style.removeProperty("--orb-travel-y");
-        return;
+  // GEZEGEN KATMANI: orb, shell'e mutlak konumlu bağımsız bir üst katmandır.
+  // Hedef çapa kapalıyken header'daki ev yuvası, açıkken composer yuvasıdır;
+  // çapa merkezi shell koordinatlarına çevrilip --orb-x/--orb-y yazılır.
+  // State geçişleri CSS transition'la süzülür; scroll/resize güncellemeleri
+  // transition kapatılarak ANINDA uygulanır (orb slot'u milim şaşmadan izler).
+  // Slot, kaydırmayla görünür bölgenin üstüne çıkarsa orb header'ın hemen
+  // altına kilitlenir — asla başka öğelerin üstünde başıboş kalmaz.
+  useLayoutEffect(() => {
+    const shell = shellRef.current;
+    const trigger = triggerRef.current;
+    const home = triggerHomeRef.current;
+    const slot = orbSlotRef.current;
+    const region = expandedRegionRef.current;
+    if (!shell || !trigger || !home || !slot || !region) return;
+    const half = 22; // 44px'lik butonun yarısı
+
+    const positionOrb = (immediate: boolean) => {
+      const shellRect = shell.getBoundingClientRect();
+      let cx: number;
+      let cy: number;
+      if (isCardExpanded) {
+        const slotRect = slot.getBoundingClientRect();
+        const regionRect = region.getBoundingClientRect();
+        cx = slotRect.left + slotRect.width / 2;
+        cy = slotRect.top + slotRect.height / 2;
+        // Slot fold üstüne kaydıysa: header altına sabitlen.
+        const minY = regionRect.top + half + 2;
+        if (cy < minY) cy = minY;
+      } else {
+        // Ev yuvası açıkken 0 genişliğe iner; sol kenar + yarı genişlik sabittir.
+        const homeRect = home.getBoundingClientRect();
+        cx = homeRect.left + half;
+        cy = homeRect.top + homeRect.height / 2;
       }
-      const homeRect = home.getBoundingClientRect();
-      const slotRect = slot.getBoundingClientRect();
-      // Orb her zaman yuvanın SOL kenarına oturur; yuva açıkken 0 genişliğe
-      // indiği için merkez yerine sol kenar + buton yarı genişliği esas alınır.
-      const originX = homeRect.left + trigger.offsetWidth / 2;
-      const originY = homeRect.top + trigger.offsetHeight / 2;
-      const dx = slotRect.left + slotRect.width / 2 - originX;
-      const dy = slotRect.top + slotRect.height / 2 - originY;
-      trigger.style.setProperty("--orb-travel-x", `${dx.toFixed(1)}px`);
-      trigger.style.setProperty("--orb-travel-y", `${dy.toFixed(1)}px`);
+      if (immediate) trigger.style.transition = "none";
+      trigger.style.setProperty("--orb-x", `${(cx - shellRect.left - half).toFixed(1)}px`);
+      trigger.style.setProperty("--orb-y", `${(cy - shellRect.top - half).toFixed(1)}px`);
+      if (immediate) {
+        if (typeof requestAnimationFrame === "function") {
+          requestAnimationFrame(() => {
+            trigger.style.transition = "";
+          });
+        } else {
+          trigger.style.transition = "";
+        }
+      }
     };
-    measureOrbTravel();
-    window.addEventListener("resize", measureOrbTravel);
-    return () => window.removeEventListener("resize", measureOrbTravel);
-  }, [isCardExpanded, expansionState]);
+
+    // İlk konum boyanmadan önce, geçişsiz otursun.
+    positionOrb(expansionState === "collapsed" || expansionState === "expanded");
+    const onScroll = () => positionOrb(true);
+    const onResize = () => positionOrb(true);
+    region.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onResize);
+    // Çapa kaydıran gecikmeli layout olayları: font yüklenmesi ve shell
+    // boyut değişimleri de anında düzeltilir.
+    let cancelled = false;
+    if (typeof document !== "undefined" && "fonts" in document) {
+      document.fonts.ready.then(() => {
+        if (!cancelled) positionOrb(true);
+      });
+    }
+    const resizeObserver =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(() => positionOrb(true))
+        : null;
+    resizeObserver?.observe(shell);
+    return () => {
+      cancelled = true;
+      region.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onResize);
+      resizeObserver?.disconnect();
+    };
+  }, [isCardExpanded, expansionState, breadcrumbs, logoLabel, notificationCount]);
 
   // Deferred focus: only after the expansion animation fully completes, and
   // only when the expansion came from the AI trigger.

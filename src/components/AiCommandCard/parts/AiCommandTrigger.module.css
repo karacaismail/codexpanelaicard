@@ -1,25 +1,32 @@
 /* AiCommandTrigger — AI orb. Bu parçanın TÜM görsel kimliği bu dosyada:
  * liquid-glass orb, 5 sn kalp atışı, glow ve composer'a göç (translate). */
 
+/*
+ * GEZEGEN KATMANI: orb, layout akışının DIŞINDA, shell'e mutlak konumlu
+ * bağımsız bir üst katmandır (güneş tutulmasındaki ay gibi). Konumu her an
+ * controller tarafından ölçülüp --orb-x/--orb-y ile verilir; header/composer
+ * layout'u değişse, içerik kaysa bile orb'u hiçbir şey itemez veya bozamaz.
+ */
 .aiTrigger {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  z-index: 40;
   background: transparent;
   border-color: transparent;
-  translate: 0 0;
+  translate: var(--orb-x, 10px) var(--orb-y, 10px);
   transition: translate var(--ai-command-card-collapse-duration) var(--ai-command-card-easing);
-  z-index: 2;
 }
 
 .aiTrigger:hover {
   background: transparent;
 }
 
-/* Orb göçü: kart açıkken controller'ın ölçtüğü --orb-travel-* vektörü kadar
- * kayar (header'daki yuvadan composer'daki yuvaya). */
+/* Açılış göçü: kemik kural gereği radius morph'u bittikten sonra, büyümeyle
+ * birlikte süzülür. */
 [data-slot="ai-command-card-shell"][data-state="expanding"] .aiTrigger,
 [data-slot="ai-command-card-shell"][data-state="expanded"] .aiTrigger {
-  translate: var(--orb-travel-x, 0px) var(--orb-travel-y, 0px);
   transition-duration: var(--ai-command-card-expand-duration);
-  /* Kemik kural: göç, radius morph'u bittikten sonra (büyümeyle birlikte). */
   transition-delay: var(--ai-command-card-radius-morph-duration);
 }
 

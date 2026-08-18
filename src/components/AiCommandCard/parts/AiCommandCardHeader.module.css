@@ -39,7 +39,8 @@
  * SIFIR genişliğe iner ve boşalan alan breadcrumb başlığına kalır; kapanışta
  * geri açılır. (overflow görünür kalmalı — orb bu kutunun çocuğudur.) */
 .triggerHome {
-  position: relative;
+  /* DİKKAT: position vermeyin — orb mutlak katmanı SHELL'e göre konumlanır;
+   * yuva positioned olursa çapa hesabı çifte ofsetlenir. */
   display: inline-flex;
   inline-size: 44px;
   block-size: 44px;
