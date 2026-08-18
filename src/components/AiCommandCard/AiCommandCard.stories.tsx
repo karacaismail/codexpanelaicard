@@ -16,6 +16,7 @@ const meta = {
   component: AiCommandCard,
   args: {
     logo: demoLogo,
+    logoLabel: "Logo",
     breadcrumbs: demoBreadcrumbs,
     menuItems: demoMenuItems,
     querySuggestions: demoQuerySuggestions,

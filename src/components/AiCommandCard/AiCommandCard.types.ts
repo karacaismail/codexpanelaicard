@@ -73,6 +73,9 @@ export interface AiCommandCardProps {
   ) => void;
 
   logo: React.ReactNode;
+  /** Optional wordmark/placeholder text shown in the light band right of the
+   * logo icon (e.g. "Logo" until the real brand asset lands). */
+  logoLabel?: string;
 
   breadcrumbs: readonly AiCommandBreadcrumbItem[];
   menuItems: readonly AiCommandMenuItem[];

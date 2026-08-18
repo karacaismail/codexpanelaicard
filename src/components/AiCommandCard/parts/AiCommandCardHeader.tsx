@@ -12,6 +12,7 @@ import { AiProfileAction } from "./AiProfileAction";
 
 interface AiCommandCardHeaderProps {
   logo: ReactNode;
+  logoLabel?: string;
   breadcrumbs: readonly AiCommandBreadcrumbItem[];
   notificationCount: number;
   profile: AiCommandProfileSummary;
@@ -37,6 +38,7 @@ interface AiCommandCardHeaderProps {
  */
 export function AiCommandCardHeader({
   logo,
+  logoLabel,
   breadcrumbs,
   notificationCount,
   profile,
@@ -54,7 +56,7 @@ export function AiCommandCardHeader({
 }: AiCommandCardHeaderProps) {
   return (
     <div className={styles.header} data-slot="ai-command-card-header">
-      <AiCommandCardLogo logo={logo} onLogoActivate={onLogoActivate} />
+      <AiCommandCardLogo logo={logo} logoLabel={logoLabel} onLogoActivate={onLogoActivate} />
 
       <AiCommandCardBreadcrumb breadcrumbs={breadcrumbs} isCardExpanded={isCardExpanded} />
 

@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { Meta, StoryObj } from "@storybook/react";
 import { fn } from "@storybook/test";
 import { PartStoryShell } from "./partStoryShell";
@@ -8,10 +9,16 @@ const meta: Meta = { title: "AiCommandCard/Parçalar/AiCommandCardLogo" };
 export default meta;
 type Story = StoryObj;
 
-export const Static: Story = {
+/* Header'daki gibi satır düzeninde göster (kolon flex'te banda yayılmasın). */
+function Row({ children }: { children: ReactNode }) {
+  return <div style={{ display: "flex", alignItems: "center" }}>{children}</div>;
+}
+
+/** Placeholder wordmark: karo ikon + sağa uzayan açık bantta "Logo". */
+export const Placeholder: Story = {
   render: () => (
     <PartStoryShell>
-      <AiCommandCardLogo logo={demoLogo} />
+      <Row><AiCommandCardLogo logo={demoLogo} logoLabel="Logo" /></Row>
     </PartStoryShell>
   ),
 };
@@ -19,7 +26,16 @@ export const Static: Story = {
 export const Clickable: Story = {
   render: () => (
     <PartStoryShell>
-      <AiCommandCardLogo logo={demoLogo} onLogoActivate={fn()} />
+      <Row><AiCommandCardLogo logo={demoLogo} logoLabel="Logo" onLogoActivate={fn()} /></Row>
+    </PartStoryShell>
+  ),
+};
+
+/** Yalnızca ikon (wordmark alanı olmadan). */
+export const IconOnly: Story = {
+  render: () => (
+    <PartStoryShell>
+      <Row><AiCommandCardLogo logo={demoLogo} /></Row>
     </PartStoryShell>
   ),
 };

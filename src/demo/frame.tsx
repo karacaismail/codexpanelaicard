@@ -24,6 +24,7 @@ function FramePage() {
       <div className="framePageContent">
         <AiCommandCard
           logo={demoLogo}
+          logoLabel="Logo"
           breadcrumbs={demoBreadcrumbs}
           menuItems={demoMenuItems}
           querySuggestions={demoQuerySuggestions}

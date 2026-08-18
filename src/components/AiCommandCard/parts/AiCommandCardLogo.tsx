@@ -3,24 +3,36 @@ import styles from "./AiCommandCardLogo.module.css";
 
 interface AiCommandCardLogoProps {
   logo: ReactNode;
+  /** Wordmark/placeholder text in the band right of the icon (e.g. "Logo"). */
+  logoLabel?: string;
   onLogoActivate?: () => void;
 }
 
-/** Marka ikonu. Aksiyonu varsa button, yoksa dekoratif statik yüzey. */
-export function AiCommandCardLogo({ logo, onLogoActivate }: AiCommandCardLogoProps) {
+/** Marka alanı: karo ikon + sağa uzayan açık zeminde wordmark/placeholder.
+ * Aksiyonu varsa button, yoksa dekoratif statik yüzey. */
+export function AiCommandCardLogo({ logo, logoLabel, onLogoActivate }: AiCommandCardLogoProps) {
+  const content = (
+    <>
+      <span className={styles.logoGlyph} aria-hidden="true">
+        {logo}
+      </span>
+      {logoLabel ? <span className={styles.logoLabel}>{logoLabel}</span> : null}
+    </>
+  );
+
   if (onLogoActivate) {
     return (
       <button
         type="button"
         className={styles.logoAction}
         data-slot="ai-command-card-logo"
-        aria-label="Ana sayfa"
+        aria-label={logoLabel ?? "Ana sayfa"}
         onClick={(event) => {
           event.stopPropagation();
           onLogoActivate();
         }}
       >
-        {logo}
+        {content}
       </button>
     );
   }
@@ -30,7 +42,7 @@ export function AiCommandCardLogo({ logo, onLogoActivate }: AiCommandCardLogoPro
       data-slot="ai-command-card-logo"
       aria-hidden="true"
     >
-      {logo}
+      {content}
     </span>
   );
 }

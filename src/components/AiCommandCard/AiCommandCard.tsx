@@ -47,6 +47,7 @@ export function AiCommandCard({
   defaultExpanded = false,
   onExpandedChange,
   logo,
+  logoLabel,
   breadcrumbs,
   menuItems,
   querySuggestions,
@@ -373,6 +374,7 @@ export function AiCommandCard({
       >
         <AiCommandCardHeader
           logo={logo}
+          logoLabel={logoLabel}
           breadcrumbs={breadcrumbs}
           notificationCount={notificationCount}
           profile={profile}
