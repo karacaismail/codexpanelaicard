@@ -5,10 +5,12 @@
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  block-size: 32px;
-  padding-inline: 5px 12px;
+  /* Adaptif: kapalı kart yüksekliğinden türetilir (64px'te 40px bant). */
+  block-size: calc(var(--ai-command-card-collapsed-height) - 24px);
+  padding-inline: 8px 14px;
   border: none;
-  border-radius: 8px;
+  /* Radius istisnası: logo bandı %100 yuvarlak kapsül. */
+  border-radius: 999px;
   background: var(--ai-cc-accent-soft);
   color: var(--ai-cc-accent);
   cursor: pointer;
@@ -28,13 +30,13 @@
 .logoGlyph {
   display: inline-grid;
   place-items: center;
-  inline-size: 22px;
-  block-size: 22px;
+  inline-size: 24px;
+  block-size: 24px;
   flex: 0 0 auto;
 }
 
 .logoLabel {
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.02em;
   white-space: nowrap;
