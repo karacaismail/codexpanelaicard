@@ -229,3 +229,11 @@
     padding-inline: 24px;
   }
 }
+
+/* Dikey ekranda açık kart, ekran yüksekliğinin ~%84'ünü kaplar
+ * (yatay/masaüstünde 520px hedefi geçerli kalır). */
+@media (orientation: portrait) {
+  .host {
+    --ai-command-card-expanded-height: 84dvh;
+  }
+}
