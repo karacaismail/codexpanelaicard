@@ -20,16 +20,23 @@
 
 .particle {
   position: absolute;
-  inline-size: 4px;
-  block-size: 4px;
-  border-radius: 100%;
-  background: var(--ai-cc-accent);
+  /* Yıldız glifinin okunabilmesi için taban 6px; scale 2x'te 12px olur. */
+  inline-size: 6px;
+  block-size: 6px;
+  color: var(--ai-cc-accent);
   /* Reduced-motion kill-switch animasyonu kapattığında da görünür kal. */
   opacity: 0.55;
   scale: 1;
   animation-duration: 12s;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
+}
+
+.starGlyph {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  fill: currentColor;
 }
 
 .particleA { animation-name: constellationA; }

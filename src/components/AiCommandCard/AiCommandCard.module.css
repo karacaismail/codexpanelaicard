@@ -17,12 +17,13 @@
    * (uçlar %100 yuvarlak); açıkken 8px kuralına döner. */
   --ai-command-card-collapsed-radius: 999px;
   --ai-command-card-expanded-radius: 8px;
-  --ai-command-card-expand-duration: 900ms;
-  --ai-command-card-collapse-duration: 620ms;
+  /* Faz süreleri: radius 0,7sn + büyüme/küçülme 0,7sn = toplam 1,4sn. */
+  --ai-command-card-expand-duration: 700ms;
+  --ai-command-card-collapse-duration: 700ms;
   /* KEMİK KURAL (değişmez): açılışta ÖNCE radius değişir, SONRA kart büyür.
    * Kapanışta ayna: önce küçülür, sonra kapsüle döner. */
-  --ai-command-card-radius-morph-duration: 600ms;
-  --ai-command-card-reveal-delay: 740ms; /* radius morph (600ms) + 140ms */
+  --ai-command-card-radius-morph-duration: 700ms;
+  --ai-command-card-reveal-delay: 840ms; /* radius morph (700ms) + 140ms */
   --ai-command-card-item-stagger: 35ms;
   --ai-command-card-hover-duration: 140ms;
   --ai-command-card-press-duration: 90ms;
