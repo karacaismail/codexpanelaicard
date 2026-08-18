@@ -8,15 +8,15 @@
 
 .particle {
   position: absolute;
-  inline-size: 3px;
-  block-size: 3px;
+  inline-size: 6px;
+  block-size: 6px;
   border-radius: 100%;
   background: var(--ai-cc-accent);
-  opacity: 0.5;
+  opacity: 0.6;
   animation: particleDrift 3.6s ease-in-out infinite;
 }
 
 @keyframes particleDrift {
-  0%, 100% { translate: 0 0; opacity: 0.35; }
-  50% { translate: var(--particle-dx, 2px) var(--particle-dy, -3px); opacity: 0.8; }
+  0%, 100% { translate: 0 0; opacity: 0.42; }
+  50% { translate: var(--particle-dx, 2px) var(--particle-dy, -3px); opacity: 0.96; }
 }
