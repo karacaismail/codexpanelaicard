@@ -25,7 +25,8 @@ const DEVICES: Record<
   Exclude<DeviceKind, "fluid">,
   { label: string; width: number; height: number }
 > = {
-  phone: { label: "Telefon", width: 390, height: 844 },
+  /* iPhone 4/5 sınıfı: bileşenin desteklediği en dar gerçek cihaz. */
+  phone: { label: "Telefon", width: 320, height: 480 },
   tablet: { label: "Tablet", width: 834, height: 1112 },
   desktop: { label: "PC", width: 1366, height: 768 },
 };
