@@ -10,7 +10,7 @@
   position: absolute;
   inline-size: 3px;
   block-size: 3px;
-  border-radius: 999px;
+  border-radius: 100%;
   background: var(--ai-cc-accent);
   opacity: 0.5;
   animation: particleDrift 3.6s ease-in-out infinite;

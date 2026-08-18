@@ -179,7 +179,7 @@
 .statusDot {
   inline-size: 8px;
   block-size: 8px;
-  border-radius: 999px;
+  border-radius: 100%;
   flex: 0 0 auto;
 }
 

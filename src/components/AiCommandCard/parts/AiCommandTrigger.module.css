@@ -31,7 +31,7 @@
   place-items: center;
   inline-size: 32px;
   block-size: 32px;
-  border-radius: 999px;
+  border-radius: 100%;
   color: #fff;
   background: linear-gradient(
     160deg,
@@ -52,7 +52,7 @@
 .aiOrbGlow {
   position: absolute;
   inset: 2px;
-  border-radius: 999px;
+  border-radius: 100%;
   background: radial-gradient(closest-side, rgba(139, 92, 246, 0.55), rgba(139, 92, 246, 0));
   filter: blur(4px);
   animation: aiHeartbeatGlow 5s ease-in-out infinite;

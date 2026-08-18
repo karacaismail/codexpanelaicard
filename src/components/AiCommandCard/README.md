@@ -72,6 +72,16 @@ transition edilir (transform: scale **yok**), üst-merkez referansıyla iki yana
 ve aşağıya büyür. 320×480'de yatay taşma yoktur; gereğinde yalnızca expanded
 içerik gövdesi dikey scroll alır (body scroll lock yok).
 
+## Radius sistemi
+
+- Tüm dikdörtgen yüzeylerde `border-radius` en fazla **8px** (0.5rem): shell,
+  menü kartları, composer, yanıt alanı, logo, rapor kartları, modallar.
+- **İstisna — tam yuvarlak öğeler `100%`:** AI orb + glow, yuvarlak aksiyon
+  butonları (`actionBase`), partiküller, durum/thinking noktaları, responseIcon.
+- Kapsül biçimliler (öneri pill'leri, rozetler, inline bar) uçları %100 yuvarlak
+  kapsüldür; CSS'te kapsül `999px` ile ifade edilir (kare olmayan kutuda `100%`
+  elips bozulması yaratır).
+
 ## Motion koreografisi
 
 Expand 560ms / collapse 380ms, `cubic-bezier(0.22, 1, 0.36, 1)`. Reveal
