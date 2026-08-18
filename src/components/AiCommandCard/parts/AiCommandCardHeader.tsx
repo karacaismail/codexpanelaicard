@@ -75,7 +75,11 @@ export function AiCommandCardHeader({
           notificationCount={notificationCount}
           onNotificationActivate={onNotificationActivate}
         />
-        <span ref={profileHostRef} aria-hidden={!isCardExpanded}>
+        <span
+          ref={profileHostRef}
+          className={styles.profileHost}
+          aria-hidden={!isCardExpanded}
+        >
           <AiProfileAction profile={profile} onProfileActivate={onProfileActivate} />
         </span>
       </div>

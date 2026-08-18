@@ -16,6 +16,25 @@
   flex: 0 0 auto;
 }
 
+/* Profil yuvası: kapalıyken SIFIR genişlik — çan en sağa oturur, boşluk
+ * kalmaz. Açılınca 44px'e açılır ve avatar belirir. */
+.profileHost {
+  display: inline-flex;
+  inline-size: 0;
+  overflow: clip;
+  /* flex gap'inin (6px) sıfır genişlikte bıraktığı payı geri al. */
+  margin-inline-start: -6px;
+  transition:
+    inline-size var(--ai-command-card-hover-duration) ease,
+    margin var(--ai-command-card-hover-duration) ease;
+}
+
+[data-slot="ai-command-card-shell"][data-state="expanding"] .profileHost,
+[data-slot="ai-command-card-shell"][data-state="expanded"] .profileHost {
+  inline-size: 44px;
+  margin-inline-start: 0;
+}
+
 /* Orb'un header'daki sabit ölçüm çapası; orb göç ederken kutusunu korur. */
 .triggerHome {
   position: relative;
