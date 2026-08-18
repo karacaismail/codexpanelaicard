@@ -85,7 +85,6 @@ export function AiCommandCard({
   const expandedRegionRef = useRef<HTMLDivElement>(null);
   const composerInputRef = useRef<HTMLInputElement>(null);
   const animationTimerRef = useRef<ReturnType<typeof setTimeout>>();
-  const orbLayerInitializedRef = useRef(false);
   // Latest submit closure; lets the trigger handler (declared earlier in the
   // lifecycle section) call it without reordering the whole controller.
   const submitAiQueryRef = useRef<(query: string) => Promise<void>>(async () => {});
@@ -306,17 +305,24 @@ export function AiCommandCard({
       }
     };
 
-    // Kurallar: (1) İlk mount'ta orb geçişsiz yerine oturur. (2) State
-    // değişimlerinde hedef YUMUŞAK geçişle verilir — süzülme asla iptal olmaz;
-    // yerleşme anında ("expanded"/"collapsed") aynı yumuşak geçiş küçük nihai
-    // düzeltmeyi yapar. (3) Scroll/resize/font düzeltmeleri yalnızca oturmuş
-    // durumda çalışır ve anında snap'lenir; geçiş sürerken tamamen atlanır ki
-    // her karede tetiklenen ResizeObserver animasyonu donduramasın.
+    // Kurallar: (1) Yalnızca İLK mount geçişsizdir. (2) Ondan sonraki HER
+    // hedef (state değişimi, yerleşme düzeltmesi, scroll/resize/font) aynı
+    // 600ms yumuşak geçişle verilir — gezegen asla ışınlanmaz; ara hedef +
+    // nihai düzeltme tek kavisli yolculuk oluşturur. (3) Geçiş sürerken
+    // (expanding/collapsing) dış düzeltmeler atlanır ki her karede tetiklenen
+    // ResizeObserver sürekli retarget'le hareketi donduramasın.
     const isSettled = expansionState === "collapsed" || expansionState === "expanded";
-    positionOrb(!orbLayerInitializedRef.current);
-    orbLayerInitializedRef.current = true;
+    // Açılış sürerken ara hedef YOK: gezegen header'da bekler, kart yerleşince
+    // tek yönlü tek süzülüşle yuvasına iner (zikzak imkânsız). Kapanışta hedef
+    // (ev yuvası) baştan bellidir; küçülmeyle birlikte eve süzülür.
+    // "İlk yerleşim" bilgisi ref yerine elementten okunur: --orb-x henüz
+    // yazılmamışsa bu gerçek ilk konumdur (StrictMode çift-mount'u yanıltamaz).
+    const isFirstPlacement = !trigger.style.getPropertyValue("--orb-x");
+    if (expansionState !== "expanding") {
+      positionOrb(isFirstPlacement);
+    }
     const correct = () => {
-      if (isSettled) positionOrb(true);
+      if (isSettled) positionOrb(false);
     };
     region.addEventListener("scroll", correct, { passive: true });
     window.addEventListener("resize", correct);
@@ -382,6 +388,25 @@ export function AiCommandCard({
     () => breadcrumbs.map((item) => item.label),
     [breadcrumbs],
   );
+
+  // Hibrit AI-first arama: input hem prompt alanı hem canlı arama motorudur.
+  // Yazarken menü kartları ve öneriler anında filtrelenir (başlık + açıklama,
+  // Türkçe harf duyarsız); submit yine AI'a gider.
+  const normalizedQuery = queryValue.trim().toLocaleLowerCase("tr-TR");
+  const visibleMenuItems = useMemo(() => {
+    if (!normalizedQuery) return menuItems;
+    return menuItems.filter((item) =>
+      `${item.label} ${item.description ?? ""}`
+        .toLocaleLowerCase("tr-TR")
+        .includes(normalizedQuery),
+    );
+  }, [menuItems, normalizedQuery]);
+  const visibleQuerySuggestions = useMemo(() => {
+    if (!normalizedQuery) return querySuggestions;
+    return querySuggestions.filter((suggestion) =>
+      suggestion.label.toLocaleLowerCase("tr-TR").includes(normalizedQuery),
+    );
+  }, [querySuggestions, normalizedQuery]);
 
   const submitAiQuery = useCallback(
     async (rawQuery: string) => {
@@ -492,10 +517,13 @@ export function AiCommandCard({
           <AiCommandCardStatus queryState={queryState} />
           <AiResponseArea response={aiResponse} queryState={queryState} motion={motion} />
           <AiQuerySuggestionList
-            querySuggestions={querySuggestions}
+            querySuggestions={visibleQuerySuggestions}
             onSuggestionSelect={handleSuggestionSelect}
           />
-          <AiCommandMenuGrid menuItems={menuItems} onMenuItemSelect={handleMenuItemSelect} />
+          <AiCommandMenuGrid
+            menuItems={visibleMenuItems}
+            onMenuItemSelect={handleMenuItemSelect}
+          />
         </div>
 
         <div

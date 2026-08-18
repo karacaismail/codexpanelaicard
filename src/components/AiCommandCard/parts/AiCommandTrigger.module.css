@@ -15,19 +15,14 @@
   background: transparent;
   border-color: transparent;
   translate: var(--orb-x, 10px) var(--orb-y, 10px);
-  transition: translate var(--ai-command-card-collapse-duration) var(--ai-command-card-easing);
+  /* Gezegenin TEK hareket kuralı: her hedefe 600ms'de, gecikmesiz, aynı
+   * eğriyle süzülür. Duruma göre süre/delay farkı YOK — ara hedef ve nihai
+   * düzeltme tek kavisli yolculuk oluşturur; ışınlanma imkânsızdır. */
+  transition: translate 600ms var(--ai-command-card-easing);
 }
 
 .aiTrigger:hover {
   background: transparent;
-}
-
-/* Açılış göçü: kemik kural gereği radius morph'u bittikten sonra, büyümeyle
- * birlikte süzülür. */
-[data-slot="ai-command-card-shell"][data-state="expanding"] .aiTrigger,
-[data-slot="ai-command-card-shell"][data-state="expanded"] .aiTrigger {
-  transition-duration: var(--ai-command-card-expand-duration);
-  transition-delay: var(--ai-command-card-radius-morph-duration);
 }
 
 /*

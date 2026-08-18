@@ -195,6 +195,29 @@ describe("AiCommandCard", () => {
     expect(getShell()).toHaveAttribute("data-state", "expanded");
   });
 
+  it("hybrid search: typing live-filters menu cards by label and description", async () => {
+    const user = userEvent.setup();
+    renderCard();
+    await expandViaTrigger(user);
+
+    const input = screen.getByRole("textbox");
+
+    // "takvim" başlıktan eşleşir → yalnızca Takvim kalır.
+    await user.type(input, "takvim");
+    expect(document.querySelectorAll('[data-slot="ai-command-menu-item"]')).toHaveLength(1);
+    expect(screen.getByRole("button", { name: /Takvim/ })).toBeInTheDocument();
+
+    // "toplantı" açıklamadan eşleşir → Takvim yine listede.
+    await user.clear(input);
+    await user.type(input, "toplantı");
+    expect(document.querySelectorAll('[data-slot="ai-command-menu-item"]')).toHaveLength(1);
+    expect(screen.getByRole("button", { name: /Toplantıları planla/ })).toBeInTheDocument();
+
+    // Temizlenince 12 kart geri gelir.
+    await user.clear(input);
+    expect(document.querySelectorAll('[data-slot="ai-command-menu-item"]')).toHaveLength(12);
+  });
+
   it("supports controlled usage via the expanded prop", async () => {
     const user = userEvent.setup();
     const onExpandedChange = vi.fn();

@@ -189,12 +189,15 @@
   position: absolute;
   inset-inline: 1px;
   inset-block-end: 1px;
-  block-size: 56px;
+  block-size: 72px;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   padding-block-end: 6px;
   background: linear-gradient(180deg, transparent 0%, var(--ai-cc-surface) 78%);
+  /* Beyaz solma alanı, altındaki kartları 2px bulanıklaştırır. */
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
   color: var(--ai-cc-text-muted);
   opacity: 0;
   pointer-events: none;
@@ -203,7 +206,8 @@
 }
 
 .scrollHint[data-visible="true"] {
-  opacity: 1;
+  /* Komple %20 kısık: tam opaklık yerine 0.8. */
+  opacity: 0.8;
 }
 
 .scrollHint svg {
