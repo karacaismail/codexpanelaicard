@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
-import { Star } from "@phosphor-icons/react";
 import base from "./actionBase.module.css";
 import styles from "./AiCommandTrigger.module.css";
+import { AiMorphingStar } from "./AiMorphingStar";
 import { AiParticleField } from "./AiParticleField";
 
 interface AiCommandTriggerProps {
@@ -42,7 +42,7 @@ export const AiCommandTrigger = forwardRef<HTMLButtonElement, AiCommandTriggerPr
       >
         <span className={styles.aiOrbGlow} aria-hidden="true" />
         <span className={styles.aiOrb} aria-hidden="true">
-          <Star size={18} weight="regular" />
+          <AiMorphingStar size={18} />
         </span>
         <AiParticleField />
       </button>
