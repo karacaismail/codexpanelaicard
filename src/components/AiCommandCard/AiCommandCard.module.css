@@ -12,7 +12,9 @@
   --ai-command-card-expanded-max-width: 1050px;
   --ai-command-card-expanded-height: 520px;
   --ai-command-card-mobile-gutter: 8px;
-  --ai-command-card-collapsed-radius: 8px;
+  /* Radius istisnası: kapalı shell, composer ile aynı search-bar kapsülü
+   * (uçlar %100 yuvarlak); açıkken 8px kuralına döner. */
+  --ai-command-card-collapsed-radius: 999px;
   --ai-command-card-expanded-radius: 8px;
   --ai-command-card-expand-duration: 560ms;
   --ai-command-card-collapse-duration: 380ms;
