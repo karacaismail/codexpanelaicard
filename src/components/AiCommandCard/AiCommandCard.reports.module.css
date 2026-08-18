@@ -48,7 +48,7 @@
 
 .kpiTile {
   border: 1px solid var(--ai-cc-border);
-  border-radius: 12px;
+  border-radius: 8px;
   background: var(--ai-cc-surface);
   padding: 10px 12px;
   display: flex;
@@ -84,7 +84,7 @@
 
 .chartCard {
   border: 1px solid var(--ai-cc-border);
-  border-radius: 12px;
+  border-radius: 8px;
   background: var(--ai-cc-surface);
   padding: 12px;
   display: flex;
@@ -130,7 +130,7 @@
 
 .tableWrap {
   border: 1px solid var(--ai-cc-border);
-  border-radius: 12px;
+  border-radius: 8px;
   background: var(--ai-cc-surface);
   overflow-x: auto;
 }

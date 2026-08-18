@@ -16,7 +16,7 @@
   inline-size: 100%;
   min-block-size: 64px;
   border: 1px solid var(--ai-cc-border);
-  border-radius: 12px;
+  border-radius: 8px;
   background: var(--ai-cc-surface);
   padding: 10px;
   text-align: start;

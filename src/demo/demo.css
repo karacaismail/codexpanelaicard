@@ -148,7 +148,7 @@ body {
 
 .framePlaceholder {
   border: 1px dashed #d0d4db;
-  border-radius: 16px;
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.7);
   padding: 24px;
   color: #7c8494;
@@ -182,7 +182,7 @@ body {
   display: flex;
   flex-direction: column;
   background: #fff;
-  border-radius: 20px;
+  border-radius: 8px;
   box-shadow: 0 32px 80px rgba(0, 0, 0, 0.35);
   overflow: hidden;
   animation: adminModalIn 260ms cubic-bezier(0.22, 1, 0.36, 1);
@@ -206,7 +206,7 @@ body {
   place-items: center;
   inline-size: 36px;
   block-size: 36px;
-  border-radius: 10px;
+  border-radius: 8px;
   background: #eef2ff;
   color: #4f46e5;
   flex: 0 0 auto;
@@ -264,7 +264,7 @@ body {
   align-items: center;
   gap: 8px;
   border: 1px solid #e6e8ec;
-  border-radius: 12px;
+  border-radius: 8px;
   background: #fff;
   color: #1c1e21;
   font-size: 12px;

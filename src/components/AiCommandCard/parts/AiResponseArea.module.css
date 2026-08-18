@@ -6,7 +6,7 @@
   align-items: flex-start;
   gap: 10px;
   border: 1px solid var(--ai-cc-border);
-  border-radius: 14px;
+  border-radius: 8px;
   background: var(--ai-cc-accent-soft);
   padding: 12px 14px;
 }

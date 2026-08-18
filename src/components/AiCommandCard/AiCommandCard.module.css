@@ -12,8 +12,8 @@
   --ai-command-card-expanded-max-width: 1050px;
   --ai-command-card-expanded-height: 520px;
   --ai-command-card-mobile-gutter: 8px;
-  --ai-command-card-collapsed-radius: 16px;
-  --ai-command-card-expanded-radius: 24px;
+  --ai-command-card-collapsed-radius: 8px;
+  --ai-command-card-expanded-radius: 8px;
   --ai-command-card-expand-duration: 560ms;
   --ai-command-card-collapse-duration: 380ms;
   --ai-command-card-reveal-delay: 150ms;
