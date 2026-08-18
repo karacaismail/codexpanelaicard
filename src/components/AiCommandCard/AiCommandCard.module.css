@@ -7,8 +7,8 @@
  */
 
 .host {
-  /* 64: 2'nin katı, sonsuz bölünebilir — pixel-perfect ölçekleme için. */
-  --ai-command-card-collapsed-height: 64px;
+  /* Sabit 72px: mobil/masaüstü tüm cihazlarda değişmez. */
+  --ai-command-card-collapsed-height: 72px;
   --ai-command-card-collapsed-max-width: 700px;
   --ai-command-card-expanded-max-width: 1050px;
   --ai-command-card-expanded-height: 520px;

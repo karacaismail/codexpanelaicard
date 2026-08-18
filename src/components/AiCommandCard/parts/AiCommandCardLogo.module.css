@@ -9,8 +9,8 @@
   block-size: calc(var(--ai-command-card-collapsed-height) - 24px);
   padding-inline: 8px 14px;
   border: none;
-  /* Radius istisnası: logo bandı %100 yuvarlak kapsül. */
-  border-radius: 999px;
+  /* Sol taraf kapsül (%100), sağ üst/alt köşeler 0. */
+  border-radius: 999px 0 0 999px;
   background: var(--ai-cc-accent-soft);
   color: var(--ai-cc-accent);
   cursor: pointer;
