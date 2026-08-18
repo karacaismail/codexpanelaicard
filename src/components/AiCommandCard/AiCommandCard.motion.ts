@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
  * so the controller can schedule its animation-complete fallback timers.
  * KEMİK KURAL: açılışta önce radius morph'u (RADIUS_MORPH_MS), sonra büyüme —
  * toplam süreler bu yüzden iki fazın toplamıdır. */
-export const RADIUS_MORPH_MS = 180;
+export const RADIUS_MORPH_MS = 600;
 export const EXPAND_DURATION_MS = 900 + RADIUS_MORPH_MS;
 export const COLLAPSE_DURATION_MS = 620 + RADIUS_MORPH_MS;
 export const REVEAL_DELAY_MS = 150;

@@ -21,8 +21,8 @@
   --ai-command-card-collapse-duration: 620ms;
   /* KEMİK KURAL (değişmez): açılışta ÖNCE radius değişir, SONRA kart büyür.
    * Kapanışta ayna: önce küçülür, sonra kapsüle döner. */
-  --ai-command-card-radius-morph-duration: 180ms;
-  --ai-command-card-reveal-delay: 320ms; /* radius morph (180ms) + 140ms */
+  --ai-command-card-radius-morph-duration: 600ms;
+  --ai-command-card-reveal-delay: 740ms; /* radius morph (600ms) + 140ms */
   --ai-command-card-item-stagger: 35ms;
   --ai-command-card-hover-duration: 140ms;
   --ai-command-card-press-duration: 90ms;
