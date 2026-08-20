@@ -8,6 +8,12 @@
       "port": 6006
     },
     {
+      "name": "thedecissionbook",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["vite", "/Users/karaca/Documents/thedecissionbook", "--port", "5180", "--strictPort"],
+      "port": 5180
+    },
+    {
       "name": "demo",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["vite", "--port", "5174", "--strictPort"],
